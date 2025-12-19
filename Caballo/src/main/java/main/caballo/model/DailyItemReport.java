@@ -8,10 +8,11 @@ public class DailyItemReport {
     private int expectedClosingQty;
     private int physicalClosingQty;
     private double soldTotalAmount;
+    private String note;
 
     public DailyItemReport() {}
 
-    public DailyItemReport(String itemName, int openingQty, int receivedQty, int soldQty, int expectedClosingQty, int physicalClosingQty, double soldTotalAmount) {
+    public DailyItemReport(String itemName, int openingQty, int receivedQty, int soldQty, int expectedClosingQty, int physicalClosingQty, double soldTotalAmount, String note) {
         this.itemName = itemName;
         this.openingQty = openingQty;
         this.receivedQty = receivedQty;
@@ -19,6 +20,7 @@ public class DailyItemReport {
         this.expectedClosingQty = expectedClosingQty;
         this.physicalClosingQty = physicalClosingQty;
         this.soldTotalAmount = soldTotalAmount;
+        this.note = note;
     }
 
     public String getItemName() {
@@ -75,5 +77,13 @@ public class DailyItemReport {
 
     public void setSoldTotalAmount(double soldTotalAmount) {
         this.soldTotalAmount = soldTotalAmount;
+    }
+
+    public String getNote() {
+        return note;
+    }
+
+    public void setNote(String note) {
+        this.note = note;
     }
 }

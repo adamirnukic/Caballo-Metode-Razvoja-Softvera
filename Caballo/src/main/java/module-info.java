@@ -9,6 +9,7 @@ module main.caballo {
     requires org.kordamp.ikonli.javafx;
     requires org.kordamp.bootstrapfx.core;
     requires eu.hansolo.tilesfx;
+    requires java.sql;
 
     opens main.caballo to javafx.fxml;
     exports main.caballo;

@@ -10,7 +10,12 @@ module main.caballo {
     requires org.kordamp.bootstrapfx.core;
     requires eu.hansolo.tilesfx;
     requires java.sql;
+    requires javafx.base;
 
     opens main.caballo to javafx.fxml;
     exports main.caballo;
+
+    exports main.caballo.controller;
+
+    opens main.caballo.controller to javafx.fxml;
 }

@@ -1,13 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1">
+<BorderPane xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml"
+            fx:controller="main.caballo.controller.LoginController">
+    <center>
+        <GridPane hgap="10" vgap="10">
+            <padding><Insets top="30" right="30" bottom="30" left="30"/></padding>
+            <Label text="Caballo - Login" GridPane.columnSpan="2" style="-fx-font-size: 18px; -fx-font-weight: bold;"/>
+            <Label text="Username:" GridPane.rowIndex="1"/>
+            <TextField fx:id="usernameField" GridPane.rowIndex="1" GridPane.columnIndex="1"/>
+            <Label text="Password:" GridPane.rowIndex="2"/>
+            <PasswordField fx:id="passwordField" GridPane.rowIndex="2" GridPane.columnIndex="1"/>
+            <Button fx:id="loginBtn" text="Login" GridPane.rowIndex="3" GridPane.columnIndex="1" maxWidth="Infinity"/>
+            <Label fx:id="statusLabel" GridPane.rowIndex="4" GridPane.columnSpan="2" style="-fx-text-fill: red;"/>
+        </GridPane>
+    </center>
+</BorderPane>
 
-    <Label layoutX="233.0" layoutY="117.0" style="-fx-font-size: 20;" text="Caballo - Login" />
-    <TextField layoutX="224.0" layoutY="182.0" maxWidth="260" promptText="Username" />
-    <PasswordField layoutX="224.0" layoutY="218.0" maxWidth="260" promptText="Password" />
-    <Button layoutX="330.0" layoutY="258.0" maxWidth="260" text="Login" />
-
-</AnchorPane>

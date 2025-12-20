@@ -11,7 +11,7 @@ public class CaballoApplication extends Application {
     @Override
     public void start(Stage stage) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(CaballoApplication.class.getResource("/main/caballo/view/login.fxml"));
-        Scene scene = new Scene(fxmlLoader.load(), 900, 600);
+        Scene scene = new Scene(fxmlLoader.load());
         stage.setTitle("Caballo");
         stage.setScene(scene);
         stage.show();

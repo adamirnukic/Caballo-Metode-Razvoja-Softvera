@@ -64,4 +64,8 @@ public class LoginController {
             ex.printStackTrace();
         }
     }
+
+    public void setOnLoginSuccess(Consumer<User> onLoginSuccess) {
+        this.onLoginSuccess = onLoginSuccess;
+    }
 }

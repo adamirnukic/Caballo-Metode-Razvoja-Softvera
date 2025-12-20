@@ -11,6 +11,7 @@ module main.caballo {
     requires eu.hansolo.tilesfx;
     requires java.sql;
     requires javafx.base;
+    requires javafx.graphics;
 
     opens main.caballo to javafx.fxml;
     exports main.caballo;

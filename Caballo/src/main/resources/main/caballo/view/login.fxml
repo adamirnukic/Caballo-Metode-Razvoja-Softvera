@@ -6,7 +6,7 @@
 <BorderPane xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml"
             fx:controller="main.caballo.controller.LoginController" prefWidth="1200" prefHeight="600">
     <center>
-        <GridPane hgap="10" vgap="10">
+        <GridPane hgap="10" vgap="10" alignment="CENTER">
             <padding><Insets top="30" right="30" bottom="30" left="30"/></padding>
             <Label text="Caballo - Login" GridPane.columnSpan="2" style="-fx-font-size: 18px; -fx-font-weight: bold;"/>
             <Label text="Username:" GridPane.rowIndex="1"/>

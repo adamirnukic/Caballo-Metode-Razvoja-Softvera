@@ -4,15 +4,15 @@
 <?import javafx.scene.layout.*?>
 
 <VBox xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml"
-      fx:controller="main.caballo.controller.DashboardController" spacing="12">
+      fx:controller="main.caballo.controller.DashboardController" spacing="12" prefWidth="1200" prefHeight="600">
     <padding>
         <Insets top="20" right="20" bottom="20" left="20"/>
     </padding>
     <Label fx:id="welcomeLabel" style="-fx-font-size: 16px; -fx-font-weight: bold;"/>
     <HBox spacing="10">
-        <Button fx:id="menuBtn" text="Menu"/>
-        <Button fx:id="ordersBtn" text="Orders"/>
-        <Button fx:id="reservationsBtn" text="Reservations"/>
+        <Button text="Menu" onAction="#openMenu"/>
+        <Button text="Orders"/>
+        <Button text="Reservations"/>
         <Button fx:id="reportsBtn" text="Reports"/>
         <Region HBox.hgrow="ALWAYS"/>
         <Button fx:id="usersBtn" text="Users (Admin)"/>

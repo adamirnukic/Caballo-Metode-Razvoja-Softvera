@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml"
+            fx:controller="main.caballo.controller.MenuController" prefWidth="1200" prefHeight="600">
+    <padding>
+        <Insets top="10" right="10" bottom="10" left="10"/>
+    </padding>
+    <top>
+        <VBox spacing="8">
+            <HBox spacing="10">
+                <Label text="Search:"/>
+                <TextField fx:id="searchField" HBox.hgrow="ALWAYS"/>
+                <Region HBox.hgrow="ALWAYS"/>
+                <Button text="Back" onAction="#goBack"/>
+            </HBox>
+            <Separator/>
+        </VBox>
+    </top>
+    <center>
+        <TableView fx:id="table">
+            <columns>
+                <TableColumn fx:id="nameCol" text="Name" prefWidth="150"/>
+                <TableColumn fx:id="descCol" text="Description" prefWidth="250"/>
+                <TableColumn fx:id="priceCol" text="Price" prefWidth="80"/>
+                <TableColumn fx:id="catCol" text="Category" prefWidth="120"/>
+                <TableColumn fx:id="qtyCol" text="Qty" prefWidth="60"/>
+            </columns>
+        </TableView>
+    </center>
+    <right>
+        <VBox spacing="8">
+            <padding>
+                <Insets top="10" right="10" bottom="10" left="10"/>
+            </padding>
+            <Label text="Name"/>
+            <TextField fx:id="nameField"/>
+            <Label text="Price"/>
+            <TextField fx:id="priceField"/>
+            <Label text="Category"/>
+            <TextField fx:id="categoryField"/>
+            <Label text="Qty"/>
+            <TextField fx:id="qtyField"/>
+            <Label text="Description"/>
+            <TextArea fx:id="descArea" prefRowCount="4"/>
+            <HBox spacing="8">
+                <Button text="Add" onAction="#addItem"/>
+                <Button text="Update" onAction="#updateItem"/>
+                <Button text="Delete" onAction="#deleteItem"/>
+            </HBox>
+        </VBox>
+    </right>
+</BorderPane>

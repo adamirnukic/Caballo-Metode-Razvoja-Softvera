@@ -27,8 +27,23 @@ public class DashboardController {
     }
 
     @FXML
+    private void openMenu(ActionEvent e) {
+        loadScene("/main/caballo/view/menu.fxml");
+    }
+
+    @FXML
     private void logout(ActionEvent e) {
         CaballoApplication.showLogin();
+    }
+
+    private void loadScene(String fxml) {
+        try {
+            Parent root = FXMLLoader.load(getClass().getResource(fxml));
+            Scene scene = welcomeLabel.getScene();
+            scene.setRoot(root);
+        } catch (Exception ex) {
+            throw new RuntimeException("Failed to load: " + fxml, ex);
+        }
     }
 
 }

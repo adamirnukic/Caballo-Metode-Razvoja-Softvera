@@ -13,7 +13,7 @@
             <TextField fx:id="usernameField" GridPane.rowIndex="1" GridPane.columnIndex="1"/>
             <Label text="Password:" GridPane.rowIndex="2"/>
             <PasswordField fx:id="passwordField" GridPane.rowIndex="2" GridPane.columnIndex="1"/>
-            <Button fx:id="loginBtn" text="Login" GridPane.rowIndex="3" GridPane.columnIndex="1" maxWidth="Infinity"/>
+            <Button text="Login" GridPane.rowIndex="3" GridPane.columnIndex="1" maxWidth="Infinity" onAction="#doLogin"/>
             <Label fx:id="statusLabel" GridPane.rowIndex="4" GridPane.columnSpan="2" style="-fx-text-fill: red;"/>
         </GridPane>
     </center>

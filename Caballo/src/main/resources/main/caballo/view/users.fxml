@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml"
+            fx:controller="main.caballo.controller.UsersController" prefWidth="1200" prefHeight="600">
+    <padding><Insets top="10" right="10" bottom="10" left="10"/></padding>
+    <top>
+        <HBox spacing="10">
+            <Label text="Users (Admin)" style="-fx-font-size: 16px; -fx-font-weight: bold;"/>
+            <Region HBox.hgrow="ALWAYS"/>
+            <Button text="Back" onAction="#goBack"/>
+        </HBox>
+
+    </top>
+    <center>
+        <TableView fx:id="table">
+            <columns>
+                <TableColumn fx:id="idCol" text="ID" prefWidth="60"/>
+                <TableColumn fx:id="usernameCol" text="Username" prefWidth="180"/>
+                <TableColumn fx:id="roleCol" text="Role" prefWidth="100"/>
+            </columns>
+        </TableView>
+    </center>
+    <right>
+        <VBox spacing="8">
+            <padding><Insets top="10" right="10" bottom="10" left="10"/></padding>
+            <Label text="Username"/>
+            <TextField fx:id="usernameField"/>
+            <Label text="Password (for create/reset)"/>
+            <PasswordField fx:id="passwordField"/>
+            <Label text="Role"/>
+            <ChoiceBox fx:id="roleChoice"/>
+            <HBox spacing="8">
+                <Button text="Create" onAction="#createUser"/>
+                <Button text="Reset Password" onAction="#resetPassword"/>
+                <Button text="Delete" onAction="#deleteUser"/>
+            </HBox>
+        </VBox>
+    </right>
+</BorderPane>
+

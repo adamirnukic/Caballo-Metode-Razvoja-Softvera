@@ -15,7 +15,7 @@
         <Button text="Reservations" onAction="#openReservations"/>
         <Button fx:id="reportsBtn" text="Reports"/>
         <Region HBox.hgrow="ALWAYS"/>
-        <Button fx:id="usersBtn" text="Users (Admin)"/>
+        <Button fx:id="usersBtn" text="Users (Admin)" onAction="#openUsers"/>
         <Button text="Logout" onAction="#logout"/>
     </HBox>
     <Separator/>

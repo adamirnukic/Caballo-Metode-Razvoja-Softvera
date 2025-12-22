@@ -37,6 +37,11 @@ public class DashboardController {
     }
 
     @FXML
+    private void openReservations(ActionEvent e) {
+        loadScene("/main/caballo/view/reservations.fxml");
+    }
+
+    @FXML
     private void logout(ActionEvent e) {
         CaballoApplication.showLogin();
     }

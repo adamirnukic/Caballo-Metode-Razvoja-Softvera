@@ -66,3 +66,43 @@ CREATE TABLE IF NOT EXISTS item_stock_movements (
     CONSTRAINT fk_item_stock_item FOREIGN KEY (item_id) REFERENCES menu_items(id),
     CONSTRAINT uq_item_stock_item_date UNIQUE (item_id, datum)
 );
+
+DELIMITER $$
+
+CREATE PROCEDURE ensure_item_stock_for_date(IN p_date DATE)
+BEGIN
+    DECLARE v_prev_date DATE;
+    SET v_prev_date = DATE_SUB(p_date, INTERVAL 1 DAY);
+
+INSERT INTO item_stock_movements (item_id, datum, opening_qty, received_qty, physical_closing_qty)
+SELECT
+    mi.id,
+    p_date AS datum,
+    COALESCE(prev.physical_closing_qty, mi.current_qty) AS opening_qty,
+    0 AS received_qty,
+    0 AS physical_closing_qty
+FROM menu_items mi
+         LEFT JOIN item_stock_movements prev
+                   ON prev.item_id = mi.id
+                       AND prev.datum = v_prev_date
+         LEFT JOIN item_stock_movements cur
+                   ON cur.item_id = mi.id
+                       AND cur.datum = p_date
+WHERE cur.id IS NULL;
+END $$
+
+DELIMITER ;
+
+
+
+DELIMITER $$
+
+CREATE PROCEDURE close_day_stock(IN p_date DATE)
+BEGIN
+UPDATE item_stock_movements sm
+    JOIN menu_items mi ON mi.id = sm.item_id
+    SET sm.physical_closing_qty = mi.current_qty
+WHERE sm.datum = p_date;
+END$$
+
+DELIMITER ;

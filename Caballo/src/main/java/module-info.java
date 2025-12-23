@@ -12,6 +12,7 @@ module main.caballo {
     requires java.sql;
     requires javafx.base;
     requires javafx.graphics;
+    requires org.apache.pdfbox;
 
     opens main.caballo to javafx.fxml;
     exports main.caballo;

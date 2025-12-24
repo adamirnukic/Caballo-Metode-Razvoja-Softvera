@@ -13,7 +13,7 @@
         <Button text="Menu" onAction="#openMenu"/>
         <Button text="Orders" onAction="#openOrders"/>
         <Button text="Reservations" onAction="#openReservations"/>
-        <Button fx:id="reportsBtn" text="Reports"/>
+        <Button fx:id="reportsBtn" text="Reports" onAction="#openReports"/>
         <Region HBox.hgrow="ALWAYS"/>
         <Button fx:id="usersBtn" text="Users (Admin)" onAction="#openUsers"/>
         <Button text="Logout" onAction="#logout"/>

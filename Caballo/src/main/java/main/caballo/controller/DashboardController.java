@@ -23,7 +23,6 @@ public class DashboardController {
         welcomeLabel.setText("Welcome, " + user.getUsername() + " (" + user.getRole() + ")");
         boolean isAdmin = user.getRole() == Role.ADMIN;
         usersBtn.setVisible(isAdmin);
-        reportsBtn.setVisible(isAdmin);
     }
 
     @FXML
@@ -39,6 +38,11 @@ public class DashboardController {
     @FXML
     private void openReservations(ActionEvent e) {
         loadScene("/main/caballo/view/reservations.fxml");
+    }
+
+    @FXML
+    private void openReports(ActionEvent e) {
+        loadScene("/main/caballo/view/reports.fxml");
     }
 
     @FXML

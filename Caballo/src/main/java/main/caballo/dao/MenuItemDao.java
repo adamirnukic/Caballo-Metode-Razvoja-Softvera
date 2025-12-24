@@ -10,4 +10,5 @@ public interface MenuItemDao {
     boolean delete(long id);
     List<MenuItem> findAll();
     List<MenuItem> search(String query, String category);
+    void addDelivery(long itemId, int quantity);
 }

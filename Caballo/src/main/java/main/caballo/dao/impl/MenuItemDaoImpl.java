@@ -112,5 +112,30 @@ public class MenuItemDaoImpl implements MenuItemDao {
                 rs.getBoolean("is_active")
         );
     }
+
+    @Override
+    public void addDelivery(long itemId, int quantity) {
+        LocalDate today = LocalDate.now();
+        String ensure = "CALL ensure_item_stock_for_date(?)";
+        String update = "UPDATE menu_items SET current_qty = current_qty + ? WHERE id = ?";
+
+        try (Connection c = DbUtil.getConnection()) {
+            c.setAutoCommit(false);
+
+            try (PreparedStatement ps1 = c.prepareStatement(ensure);
+                 PreparedStatement ps2 = c.prepareStatement(update)) {
+                ps1.setDate(1, Date.valueOf(today));
+                ps1.execute();
+
+                ps2.setInt(1, quantity);
+                ps2.setLong(2, itemId);
+                ps2.executeUpdate();
+            }
+
+            c.commit();
+        } catch (SQLException e) {
+            throw new RuntimeException("MenuItem addDelivery failed", e);
+        }
+    }
 }
 

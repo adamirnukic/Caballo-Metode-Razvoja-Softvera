@@ -50,6 +50,11 @@
                 <Button text="Update" onAction="#updateItem"/>
                 <Button text="Delete" onAction="#deleteItem"/>
             </HBox>
+            <HBox spacing="8">
+                <Label text="Količina"/>
+                <TextField fx:id="deliveryQtyField" prefWidth="80"/>
+                <Button text="Dodaj dostavu" onAction="#addDelivery"/>
+            </HBox>
         </VBox>
     </right>
 </BorderPane>

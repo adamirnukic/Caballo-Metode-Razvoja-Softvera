@@ -3,7 +3,9 @@ package main.caballo.controller;
 import javafx.event.ActionEvent;
 import main.caballo.CaballoApplication;
 import main.caballo.dao.MenuItemDao;
+import main.caballo.dao.ReportDao;
 import main.caballo.dao.impl.MenuItemDaoImpl;
+import main.caballo.dao.impl.ReportDaoImpl;
 import main.caballo.model.MenuItem;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleIntegerProperty;
@@ -12,6 +14,8 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+
+import java.time.LocalDate;
 
 public class MenuController {
     @FXML private TableView<MenuItem> table;
@@ -25,10 +29,12 @@ public class MenuController {
     @FXML private TextField priceField;
     @FXML private TextField categoryField;
     @FXML private TextField qtyField;
+    @FXML private TextField deliveryQtyField;
     @FXML private TextArea descArea;
     @FXML private TextField searchField;
 
     private final MenuItemDao dao = new MenuItemDaoImpl();
+    private final ReportDao reportDao = new ReportDaoImpl();
     private final ObservableList<MenuItem> data = FXCollections.observableArrayList();
 
     @FXML
@@ -144,12 +150,49 @@ public class MenuController {
         }
     }
 
+    @FXML
+    private void addDelivery(ActionEvent e) {
+        MenuItem sel = table.getSelectionModel().getSelectedItem();
+        if (sel == null) {
+            showError("Select an item.");
+            return;
+        }
+        if (deliveryQtyField == null) {
+            showError("Delivery quantity field not configured.");
+            return;
+        }
+
+        int qty;
+        try {
+            qty = Integer.parseInt(deliveryQtyField.getText());
+        } catch (NumberFormatException ex) {
+            showError("Invalid delivery quantity.");
+            return;
+        }
+        if (qty <= 0) {
+            showError("Quantity must be > 0.");
+            return;
+        }
+
+        try {
+            dao.addDelivery(sel.getId(), qty);
+            reportDao.addReceivedQty(LocalDate.now(), sel.getId(), qty);
+
+            sel.setCurrentQty(sel.getCurrentQty() + qty);
+            table.refresh();
+            deliveryQtyField.clear();
+        } catch (Exception ex) {
+            showError("Delivery failed: " + ex.getMessage());
+        }
+    }
+
     private void clearForm() {
         nameField.clear();
         priceField.clear();
         categoryField.clear();
         qtyField.clear();
         descArea.clear();
+        deliveryQtyField.clear();
     }
 
     @FXML

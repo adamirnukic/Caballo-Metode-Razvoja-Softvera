@@ -13,6 +13,7 @@ module main.caballo {
     requires javafx.base;
     requires javafx.graphics;
     requires org.apache.pdfbox;
+    requires java.desktop;
 
     opens main.caballo to javafx.fxml;
     exports main.caballo;

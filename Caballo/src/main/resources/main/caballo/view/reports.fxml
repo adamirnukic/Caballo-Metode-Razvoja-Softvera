@@ -4,48 +4,68 @@
 <?import javafx.scene.layout.*?>
 
 <VBox xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml"
-      fx:controller="main.caballo.controller.ReportsController" spacing="10" prefWidth="1200" prefHeight="600">
+      fx:controller="main.caballo.controller.ReportsController"
+      spacing="10" prefWidth="1200" prefHeight="600"
+      stylesheets="@app.css"
+      styleClass="app-root">
+
     <padding>
-        <Insets top="10" right="10" bottom="10" left="10"/>
+        <Insets top="14" right="14" bottom="14" left="14"/>
     </padding>
 
-    <HBox spacing="10">
-        <Label text="Reports" style="-fx-font-size: 16px; -fx-font-weight: bold;"/>
+    <HBox spacing="10" styleClass="app-header">
+        <VBox spacing="2">
+            <Label text="Reports" styleClass="app-title"/>
+            <Label text="Daily overview and exports" styleClass="muted"/>
+        </VBox>
         <Region HBox.hgrow="ALWAYS"/>
-        <Button text="Back" onAction="#goBack"/>
+        <Button text="Back" onAction="#goBack" styleClass="btn-secondary"/>
     </HBox>
 
-    <HBox spacing="10">
-        <Label text="Date:"/>
+    <HBox spacing="10" alignment="CENTER_LEFT" styleClass="card toolbar">
+        <Label text="Date:" styleClass="muted"/>
         <DatePicker fx:id="datePicker"/>
-        <Button text="Load" onAction="#loadData"/>
-        <Button text="Export Daily PDF" onAction="#export"/>
-        <Button text="Close Day" onAction="#onCloseDayClicked"/>
+        <Button text="Load" onAction="#loadData" styleClass="btn-primary"/>
+        <Button text="Export Daily PDF" onAction="#export" styleClass="btn-secondary"/>
+        <Button text="Close Day" onAction="#onCloseDayClicked" styleClass="btn-danger"/>
+
+        <Region HBox.hgrow="ALWAYS"/>
+
+        <Label fx:id="totalLabel" text="0.00 BAM" styleClass="app-title"/>
     </HBox>
 
-    <Label fx:id="totalLabel" text="Total: 0.00 BAM" style="-fx-font-weight: bold;"/>
+    <HBox spacing="10" styleClass="content" VBox.vgrow="ALWAYS">
 
-    <TableView fx:id="dailyItemsTable" prefHeight="500.0" editable="true">
-        <columns>
-            <TableColumn fx:id="colItemName" text="Artikal" prefWidth="150.0"/>
-            <TableColumn fx:id="colOpeningQty" text="Početni" prefWidth="70.0"/>
-            <TableColumn fx:id="colReceivedQty" text="Primljeno" prefWidth="70.0"/>
-            <TableColumn fx:id="colSoldQty" text="Prodano" prefWidth="70.0"/>
-            <TableColumn fx:id="colExpectedClosingQty" text="Očekivano" prefWidth="80.0"/>
-            <TableColumn fx:id="colPhysicalClosingQty" text="Fizičko" prefWidth="80.0"/>
-            <TableColumn fx:id="colSoldTotalAmount" text="Ukupno (KM)" prefWidth="90.0"/>
-            <TableColumn fx:id="colNote" text="Napomena" prefWidth="150.0"/>
-        </columns>
-    </TableView>
+        <VBox styleClass="card" HBox.hgrow="ALWAYS" VBox.vgrow="ALWAYS">
+            <TableView fx:id="dailyItemsTable" editable="true" VBox.vgrow="ALWAYS" prefHeight="520.0">
+                <columnResizePolicy>
+                    <TableView fx:constant="CONSTRAINED_RESIZE_POLICY"/>
+                </columnResizePolicy>
 
-    <SplitPane dividerPositions="0.5">
-        <VBox spacing="6">
-            <Label text="Top Items"/>
-            <ListView fx:id="topItemsList"/>
+                <columns>
+                    <TableColumn fx:id="colItemName" text="Artikal" prefWidth="150.0"/>
+                    <TableColumn fx:id="colOpeningQty" text="Početni" prefWidth="70.0"/>
+                    <TableColumn fx:id="colReceivedQty" text="Primljeno" prefWidth="70.0"/>
+                    <TableColumn fx:id="colSoldQty" text="Prodano" prefWidth="70.0"/>
+                    <TableColumn fx:id="colExpectedClosingQty" text="Očekivano" prefWidth="80.0"/>
+                    <TableColumn fx:id="colPhysicalClosingQty" text="Fizičko" prefWidth="80.0"/>
+                    <TableColumn fx:id="colSoldTotalAmount" text="Ukupno (KM)" prefWidth="90.0"/>
+                    <TableColumn fx:id="colNote" text="Napomena" prefWidth="150.0"/>
+                </columns>
+            </TableView>
         </VBox>
-        <VBox spacing="6">
-            <Label text="Sales by Waiter"/>
-            <ListView fx:id="salesByWaiterList"/>
+
+        <VBox spacing="10" prefWidth="360" minWidth="320" maxWidth="420" VBox.vgrow="ALWAYS">
+            <VBox spacing="8" styleClass="card" VBox.vgrow="ALWAYS">
+                <Label text="Top Items" styleClass="card-title"/>
+                <ListView fx:id="topItemsList" VBox.vgrow="ALWAYS"/>
+            </VBox>
+
+            <VBox spacing="8" styleClass="card" VBox.vgrow="ALWAYS">
+                <Label text="Sales by Waiter" styleClass="card-title"/>
+                <ListView fx:id="salesByWaiterList" VBox.vgrow="ALWAYS"/>
+            </VBox>
         </VBox>
-    </SplitPane>
+
+    </HBox>
 </VBox>

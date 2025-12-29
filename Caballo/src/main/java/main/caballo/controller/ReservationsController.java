@@ -24,7 +24,6 @@ public class ReservationsController {
     private DatePicker datePicker;
 
     @FXML private TableView<Reservation> reservationsTable;
-    @FXML private TableColumn<Reservation, Number> resIdCol;
     @FXML private TableColumn<Reservation, Number> resTableCol;
     @FXML private TableColumn<Reservation, String> resNameCol;
     @FXML private TableColumn<Reservation, String> resPhoneCol;
@@ -46,7 +45,6 @@ public class ReservationsController {
     private void initialize() {
         datePicker.setValue(LocalDate.now());
 
-        resIdCol.setCellValueFactory(c -> new SimpleLongProperty(c.getValue().getId()));
         resTableCol.setCellValueFactory(c -> new SimpleLongProperty(c.getValue().getTableId()));
         resNameCol.setCellValueFactory(c -> new SimpleStringProperty(c.getValue().getImeGosta()));
         resPhoneCol.setCellValueFactory(c -> new SimpleStringProperty(c.getValue().getBrojTelefona()));

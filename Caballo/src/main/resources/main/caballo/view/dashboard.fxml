@@ -4,20 +4,51 @@
 <?import javafx.scene.layout.*?>
 
 <VBox xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml"
-      fx:controller="main.caballo.controller.DashboardController" spacing="12" prefWidth="1200" prefHeight="600">
+      fx:controller="main.caballo.controller.DashboardController"
+      spacing="12" prefWidth="1200" prefHeight="600"
+      stylesheets="@app.css"
+      styleClass="app-root">
+
     <padding>
-        <Insets top="20" right="20" bottom="20" left="20"/>
+        <Insets top="14" right="14" bottom="14" left="14"/>
     </padding>
-    <Label fx:id="welcomeLabel" style="-fx-font-size: 16px; -fx-font-weight: bold;"/>
-    <HBox spacing="10">
-        <Button text="Menu" onAction="#openMenu"/>
-        <Button text="Orders" onAction="#openOrders"/>
-        <Button text="Reservations" onAction="#openReservations"/>
-        <Button fx:id="reportsBtn" text="Reports" onAction="#openReports"/>
+
+    <HBox spacing="10" styleClass="app-header">
+        <VBox spacing="3">
+            <Label text="Dashboard" styleClass="app-title"/>
+            <Label fx:id="welcomeLabel" styleClass="muted"/>
+        </VBox>
         <Region HBox.hgrow="ALWAYS"/>
-        <Button fx:id="usersBtn" text="Users (Admin)" onAction="#openUsers"/>
-        <Button text="Logout" onAction="#logout"/>
+        <Button fx:id="usersBtn" text="Users (Admin)" onAction="#openUsers" styleClass="btn-secondary"/>
+        <Button fx:id="reportsBtn" text="Reports" onAction="#openReports" styleClass="btn-secondary"/>
+        <Button text="Logout" onAction="#logout" styleClass="btn-secondary"/>
     </HBox>
-    <Separator/>
-    <Label text="Select an option to proceed."/>
+
+    <VBox spacing="10" styleClass="content">
+        <Label text="Quick actions" styleClass="card-title"/>
+
+        <HBox spacing="12">
+            <VBox spacing="10" styleClass="card" HBox.hgrow="ALWAYS">
+                <Label text="Menu" styleClass="card-title"/>
+                <Label text="Manage items, prices and stock." styleClass="muted" wrapText="true"/>
+                <Button text="Open Menu" onAction="#openMenu" styleClass="btn-primary"/>
+            </VBox>
+
+            <VBox spacing="10" styleClass="card" HBox.hgrow="ALWAYS">
+                <Label text="Orders" styleClass="card-title"/>
+                <Label text="Create and review orders quickly." styleClass="muted" wrapText="true"/>
+                <Button text="Open Orders" onAction="#openOrders" styleClass="btn-primary"/>
+            </VBox>
+
+            <VBox spacing="10" styleClass="card" HBox.hgrow="ALWAYS">
+                <Label text="Reservations" styleClass="card-title"/>
+                <Label text="Plan tables and daily bookings." styleClass="muted" wrapText="true"/>
+                <Button text="Open Reservations" onAction="#openReservations" styleClass="btn-primary"/>
+            </VBox>
+        </HBox>
+
+        <Separator/>
+
+        <Label text="Select an option to proceed." styleClass="muted"/>
+    </VBox>
 </VBox>

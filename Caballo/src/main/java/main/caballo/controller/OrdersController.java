@@ -2,7 +2,6 @@ package main.caballo.controller;
 
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleIntegerProperty;
-import javafx.beans.property.SimpleLongProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -21,12 +20,9 @@ import main.caballo.model.OrderItem;
 import java.time.format.DateTimeFormatter;
 
 public class OrdersController {
-    @FXML
-    private TextField qtyField;
+    @FXML private TextField qtyField;
 
     @FXML private TableView<Order> ordersTable;
-    @FXML private TableColumn<Order, Number> orderIdCol;
-    @FXML private TableColumn<Order, Number> orderUserCol;
     @FXML private TableColumn<Order, String> orderDateCol;
     @FXML private TableColumn<Order, Number> orderTotalCol;
 
@@ -51,8 +47,6 @@ public class OrdersController {
 
     @FXML
     private void initialize() {
-        orderIdCol.setCellValueFactory(c -> new SimpleLongProperty(c.getValue().getId()));
-        orderUserCol.setCellValueFactory(c -> new SimpleLongProperty(c.getValue().getUserId()));
         orderDateCol.setCellValueFactory(c -> new SimpleStringProperty(DF.format(c.getValue().getDatum())));
         orderTotalCol.setCellValueFactory(c -> new SimpleDoubleProperty(c.getValue().getUkupno()));
 

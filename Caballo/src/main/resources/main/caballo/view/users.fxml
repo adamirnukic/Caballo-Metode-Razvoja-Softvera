@@ -4,40 +4,60 @@
 <?import javafx.scene.layout.*?>
 
 <BorderPane xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml"
-            fx:controller="main.caballo.controller.UsersController" prefWidth="1200" prefHeight="600">
-    <padding><Insets top="10" right="10" bottom="10" left="10"/></padding>
-    <top>
-        <HBox spacing="10">
-            <Label text="Users (Admin)" style="-fx-font-size: 16px; -fx-font-weight: bold;"/>
-            <Region HBox.hgrow="ALWAYS"/>
-            <Button text="Back" onAction="#goBack"/>
-        </HBox>
+            fx:controller="main.caballo.controller.UsersController"
+            prefWidth="1200" prefHeight="600"
+            stylesheets="@app.css"
+            styleClass="app-root">
 
+    <padding>
+        <Insets top="14" right="14" bottom="14" left="14"/>
+    </padding>
+
+    <top>
+        <HBox spacing="10" styleClass="app-header">
+            <VBox spacing="2">
+                <Label text="Users" styleClass="app-title"/>
+                <Label text="Admin management" styleClass="muted"/>
+            </VBox>
+            <Region HBox.hgrow="ALWAYS"/>
+            <Button text="Back" onAction="#goBack" styleClass="btn-secondary"/>
+        </HBox>
     </top>
+
     <center>
-        <TableView fx:id="table">
-            <columns>
-                <TableColumn fx:id="idCol" text="ID" prefWidth="60"/>
-                <TableColumn fx:id="usernameCol" text="Username" prefWidth="180"/>
-                <TableColumn fx:id="roleCol" text="Role" prefWidth="100"/>
-            </columns>
-        </TableView>
+        <VBox styleClass="content">
+            <VBox styleClass="card">
+                <TableView fx:id="table">
+                    <columns>
+                        <TableColumn fx:id="idCol" text="ID" prefWidth="60"/>
+                        <TableColumn fx:id="usernameCol" text="Username" prefWidth="180"/>
+                        <TableColumn fx:id="roleCol" text="Role" prefWidth="100"/>
+                    </columns>
+                </TableView>
+            </VBox>
+        </VBox>
     </center>
+
     <right>
-        <VBox spacing="8">
-            <padding><Insets top="10" right="10" bottom="10" left="10"/></padding>
-            <Label text="Username"/>
-            <TextField fx:id="usernameField"/>
-            <Label text="Password (for create/reset)"/>
-            <PasswordField fx:id="passwordField"/>
-            <Label text="Role"/>
-            <ChoiceBox fx:id="roleChoice"/>
-            <HBox spacing="8">
-                <Button text="Create" onAction="#createUser"/>
-                <Button text="Reset Password" onAction="#resetPassword"/>
-                <Button text="Delete" onAction="#deleteUser"/>
-            </HBox>
+        <VBox spacing="10" prefWidth="360" styleClass="content">
+            <VBox spacing="10" styleClass="card">
+                <Label text="User details" styleClass="card-title"/>
+
+                <Label text="Username" styleClass="muted"/>
+                <TextField fx:id="usernameField"/>
+
+                <Label text="Password (for create/reset)" styleClass="muted"/>
+                <PasswordField fx:id="passwordField"/>
+
+                <Label text="Role" styleClass="muted"/>
+                <ChoiceBox fx:id="roleChoice"/>
+
+                <HBox spacing="8">
+                    <Button text="Create" onAction="#createUser" styleClass="btn-primary"/>
+                    <Button text="Reset Password" onAction="#resetPassword" styleClass="btn-secondary"/>
+                    <Button text="Delete" onAction="#deleteUser" styleClass="btn-danger"/>
+                </HBox>
+            </VBox>
         </VBox>
     </right>
 </BorderPane>
-

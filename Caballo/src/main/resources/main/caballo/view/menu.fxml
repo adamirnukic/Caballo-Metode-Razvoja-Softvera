@@ -4,57 +4,81 @@
 <?import javafx.scene.layout.*?>
 
 <BorderPane xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml"
-            fx:controller="main.caballo.controller.MenuController" prefWidth="1200" prefHeight="600">
+            fx:controller="main.caballo.controller.MenuController"
+            prefWidth="1200" prefHeight="600"
+            stylesheets="@app.css"
+            styleClass="app-root">
+
     <padding>
-        <Insets top="10" right="10" bottom="10" left="10"/>
+        <Insets top="14" right="14" bottom="14" left="14"/>
     </padding>
+
     <top>
-        <VBox spacing="8">
-            <HBox spacing="10">
-                <Label text="Search:"/>
-                <TextField fx:id="searchField" HBox.hgrow="ALWAYS"/>
+        <VBox spacing="10" styleClass="app-header">
+            <HBox spacing="10" styleClass="toolbar">
+                <VBox spacing="2">
+                    <Label text="Menu" styleClass="app-title"/>
+                    <Label text="Search and manage menu items" styleClass="muted"/>
+                </VBox>
                 <Region HBox.hgrow="ALWAYS"/>
-                <Button text="Back" onAction="#goBack"/>
+                <Label text="Search:" styleClass="muted"/>
+                <TextField fx:id="searchField" prefWidth="320"/>
+                <Button text="Back" onAction="#goBack" styleClass="btn-secondary"/>
             </HBox>
-            <Separator/>
         </VBox>
     </top>
+
     <center>
-        <TableView fx:id="table">
-            <columns>
-                <TableColumn fx:id="nameCol" text="Name" prefWidth="150"/>
-                <TableColumn fx:id="descCol" text="Description" prefWidth="250"/>
-                <TableColumn fx:id="priceCol" text="Price" prefWidth="80"/>
-                <TableColumn fx:id="catCol" text="Category" prefWidth="120"/>
-                <TableColumn fx:id="qtyCol" text="Qty" prefWidth="60"/>
-            </columns>
-        </TableView>
+        <VBox styleClass="content">
+            <VBox styleClass="card">
+                <TableView fx:id="table">
+                    <columns>
+                        <TableColumn fx:id="nameCol" text="Name" prefWidth="150"/>
+                        <TableColumn fx:id="descCol" text="Description" prefWidth="250"/>
+                        <TableColumn fx:id="priceCol" text="Price" prefWidth="80"/>
+                        <TableColumn fx:id="catCol" text="Category" prefWidth="120"/>
+                        <TableColumn fx:id="qtyCol" text="Qty" prefWidth="60"/>
+                    </columns>
+                </TableView>
+            </VBox>
+        </VBox>
     </center>
+
     <right>
-        <VBox spacing="8">
-            <padding>
-                <Insets top="10" right="10" bottom="10" left="10"/>
-            </padding>
-            <Label text="Name"/>
-            <TextField fx:id="nameField"/>
-            <Label text="Price"/>
-            <TextField fx:id="priceField"/>
-            <Label text="Category"/>
-            <TextField fx:id="categoryField"/>
-            <Label text="Qty"/>
-            <TextField fx:id="qtyField"/>
-            <Label text="Description"/>
-            <TextArea fx:id="descArea" prefRowCount="4"/>
-            <HBox spacing="8">
-                <Button text="Add" onAction="#addItem"/>
-                <Button text="Update" onAction="#updateItem"/>
-                <Button text="Delete" onAction="#deleteItem"/>
-            </HBox>
-            <HBox spacing="8">
-                <Label text="Količina"/>
-                <TextField fx:id="deliveryQtyField" prefWidth="80"/>
-                <Button text="Dodaj dostavu" onAction="#addDelivery"/>
-            </HBox>
+        <VBox spacing="3" prefWidth="360" styleClass="content">
+            <VBox spacing="4" styleClass="card">
+                <Label text="Item details" styleClass="card-title"/>
+
+                <Label text="Name" styleClass="muted"/>
+                <TextField fx:id="nameField"/>
+
+                <Label text="Price" styleClass="muted"/>
+                <TextField fx:id="priceField"/>
+
+                <Label text="Category" styleClass="muted"/>
+                <TextField fx:id="categoryField"/>
+
+                <Label text="Qty" styleClass="muted"/>
+                <TextField fx:id="qtyField"/>
+
+                <Label text="Description" styleClass="muted"/>
+                <TextArea fx:id="descArea" prefRowCount="4"/>
+
+                <HBox spacing="8">
+                    <Button text="Add" onAction="#addItem" styleClass="btn-primary"/>
+                    <Button text="Update" onAction="#updateItem" styleClass="btn-secondary"/>
+                    <Button text="Delete" onAction="#deleteItem" styleClass="btn-danger"/>
+                </HBox>
+
+                <Separator/>
+
+                <Label text="Delivery" styleClass="card-title"/>
+                <HBox spacing="8" styleClass="toolbar">
+                    <Label text="Količina" styleClass="muted"/>
+                    <TextField fx:id="deliveryQtyField" prefWidth="90"/>
+                    <Button text="Dodaj dostavu" onAction="#addDelivery" styleClass="btn-secondary"/>
+                </HBox>
+            </VBox>
         </VBox>
     </right>
 </BorderPane>

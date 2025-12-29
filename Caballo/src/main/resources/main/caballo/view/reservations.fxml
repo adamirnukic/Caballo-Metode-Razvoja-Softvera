@@ -4,52 +4,83 @@
 <?import javafx.scene.layout.*?>
 
 <BorderPane xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml"
-            fx:controller="main.caballo.controller.ReservationsController" prefWidth="1200" prefHeight="600">
-    <padding><Insets top="10" right="10" bottom="10" left="10"/></padding>
+            fx:controller="main.caballo.controller.ReservationsController"
+            prefWidth="1200" prefHeight="600"
+            stylesheets="@app.css"
+            styleClass="app-root">
+
+    <padding>
+        <Insets top="14" right="14" bottom="14" left="14"/>
+    </padding>
+
     <top>
-        <HBox spacing="10">
-            <Label text="Reservations" style="-fx-font-size: 16px; -fx-font-weight: bold;"/>
-            <Region HBox.hgrow="ALWAYS"/>
-            <Button text="Back" onAction="#goBack"/>
-        </HBox>
-    </top>
-    <center>
-        <VBox spacing="8">
-            <HBox spacing="10">
-                <Label text="Date"/>
-                <DatePicker fx:id="datePicker"/>
-                <Button text="Load" onAction="#loadData"/>
+        <VBox spacing="10">
+            <HBox spacing="10" styleClass="app-header">
+                <VBox spacing="2">
+                    <Label text="Reservations" styleClass="app-title"/>
+                    <Label text="Plan tables and daily bookings" styleClass="muted"/>
+                </VBox>
+                <Region HBox.hgrow="ALWAYS"/>
+                <Button text="Back" onAction="#goBack" styleClass="btn-secondary"/>
             </HBox>
-            <TableView fx:id="reservationsTable">
-                <columns>
-                    <TableColumn fx:id="resIdCol" text="ID" prefWidth="60"/>
-                    <TableColumn fx:id="resTableCol" text="Table" prefWidth="80"/>
-                    <TableColumn fx:id="resNameCol" text="Guest" prefWidth="160"/>
-                    <TableColumn fx:id="resPhoneCol" text="Phone" prefWidth="120"/>
-                    <TableColumn fx:id="resTimeCol" text="Time" prefWidth="80"/>
-                    <TableColumn fx:id="resPeopleCol" text="#" prefWidth="50"/>
-                </columns>
-            </TableView>
-            <Separator/>
-            <GridPane hgap="8" vgap="8">
-                <Label text="Table" GridPane.rowIndex="0"/>
-                <ComboBox fx:id="tableChoice" GridPane.rowIndex="0" GridPane.columnIndex="1"/>
-                <Label text="Guest" GridPane.rowIndex="1"/>
-                <TextField fx:id="guestField" GridPane.rowIndex="1" GridPane.columnIndex="1"/>
-                <Label text="Phone" GridPane.rowIndex="2"/>
-                <TextField fx:id="phoneField" GridPane.rowIndex="2" GridPane.columnIndex="1"/>
-                <Label text="Time (HH:mm)" GridPane.rowIndex="3"/>
-                <TextField fx:id="timeField" GridPane.rowIndex="3" GridPane.columnIndex="1"/>
-                <Label text="People" GridPane.rowIndex="4"/>
-                <TextField fx:id="peopleField" GridPane.rowIndex="4" GridPane.columnIndex="1"/>
-                <Label text="Note" GridPane.rowIndex="5"/>
-                <TextField fx:id="noteField" GridPane.rowIndex="5" GridPane.columnIndex="1"/>
-                <HBox spacing="8" GridPane.rowIndex="6" GridPane.columnIndex="1">
-                    <Button text="Create" onAction="#create"/>
-                    <Button text="Update" onAction="#update"/>
-                    <Button text="Delete" onAction="#delete"/>
-                </HBox>
-            </GridPane>
+
+            <HBox spacing="10" styleClass="card toolbar" alignment="CENTER_LEFT">
+                <Label text="Date" styleClass="muted"/>
+                <DatePicker fx:id="datePicker"/>
+                <Button text="Load" onAction="#loadData" styleClass="btn-primary"/>
+            </HBox>
         </VBox>
+    </top>
+
+    <center>
+        <SplitPane dividerPositions="0.55" styleClass="content">
+            <VBox spacing="10" styleClass="card" VBox.vgrow="ALWAYS">
+                <Label text="Reservations" styleClass="card-title"/>
+                <TableView fx:id="reservationsTable" VBox.vgrow="ALWAYS">
+                    <columns>
+                        <TableColumn fx:id="resTableCol" text="Table" prefWidth="80"/>
+                        <TableColumn fx:id="resNameCol" text="Guest" prefWidth="160"/>
+                        <TableColumn fx:id="resPhoneCol" text="Phone" prefWidth="120"/>
+                        <TableColumn fx:id="resTimeCol" text="Time" prefWidth="80"/>
+                        <TableColumn fx:id="resPeopleCol" text="#" prefWidth="50"/>
+                    </columns>
+                </TableView>
+            </VBox>
+
+            <VBox spacing="10" styleClass="card" VBox.vgrow="ALWAYS">
+                <Label text="Reservation details" styleClass="card-title"/>
+
+                <GridPane hgap="10" vgap="10">
+                    <columnConstraints>
+                        <ColumnConstraints minWidth="110" halignment="LEFT"/>
+                        <ColumnConstraints hgrow="ALWAYS"/>
+                    </columnConstraints>
+
+                    <Label text="Table" styleClass="muted" GridPane.rowIndex="0" GridPane.columnIndex="0"/>
+                    <ComboBox fx:id="tableChoice" GridPane.rowIndex="0" GridPane.columnIndex="1" maxWidth="1.7976931348623157E308"/>
+
+                    <Label text="Guest" styleClass="muted" GridPane.rowIndex="1" GridPane.columnIndex="0"/>
+                    <TextField fx:id="guestField" GridPane.rowIndex="1" GridPane.columnIndex="1"/>
+
+                    <Label text="Phone" styleClass="muted" GridPane.rowIndex="2" GridPane.columnIndex="0"/>
+                    <TextField fx:id="phoneField" GridPane.rowIndex="2" GridPane.columnIndex="1"/>
+
+                    <Label text="Time (HH:mm)" styleClass="muted" GridPane.rowIndex="3" GridPane.columnIndex="0"/>
+                    <TextField fx:id="timeField" GridPane.rowIndex="3" GridPane.columnIndex="1"/>
+
+                    <Label text="People" styleClass="muted" GridPane.rowIndex="4" GridPane.columnIndex="0"/>
+                    <TextField fx:id="peopleField" GridPane.rowIndex="4" GridPane.columnIndex="1"/>
+
+                    <Label text="Note" styleClass="muted" GridPane.rowIndex="5" GridPane.columnIndex="0"/>
+                    <TextField fx:id="noteField" GridPane.rowIndex="5" GridPane.columnIndex="1"/>
+
+                    <HBox spacing="8" GridPane.rowIndex="6" GridPane.columnIndex="1">
+                        <Button text="Create" onAction="#create" styleClass="btn-primary"/>
+                        <Button text="Update" onAction="#update" styleClass="btn-secondary"/>
+                        <Button text="Delete" onAction="#delete" styleClass="btn-danger"/>
+                    </HBox>
+                </GridPane>
+            </VBox>
+        </SplitPane>
     </center>
 </BorderPane>

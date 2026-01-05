@@ -4,13 +4,11 @@ public class DiningTable {
     private long id;
     private int brojStola;
     private int brojSjedista;
-    private String status;
 
-    public DiningTable(long id, int brojStola, int brojSjedista, String status) {
+    public DiningTable(long id, int brojStola, int brojSjedista) {
         this.id = id;
         this.brojStola = brojStola;
         this.brojSjedista = brojSjedista;
-        this.status = status;
     }
 
     public long getId() {
@@ -37,16 +35,8 @@ public class DiningTable {
         this.brojSjedista = brojSjedista;
     }
 
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
-    }
-
     @Override
     public String toString() {
-        return "Sto #" + brojStola + " (" + brojSjedista + " sjedista) - " + status;
+        return "Sto #" + brojStola + " (" + brojSjedista + " sjedista)";
     }
 }

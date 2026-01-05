@@ -18,10 +18,12 @@ import main.caballo.model.Reservation;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
+import java.util.List;
 
 public class ReservationsController {
-    @FXML
-    private DatePicker datePicker;
+    @FXML private DatePicker datePicker;
 
     @FXML private TableView<Reservation> reservationsTable;
     @FXML private TableColumn<Reservation, Number> resTableCol;
@@ -41,11 +43,22 @@ public class ReservationsController {
     private final TableDao tableDao = new TableDaoImpl();
     private final ObservableList<Reservation> data = FXCollections.observableArrayList();
 
+    private List<DiningTable> allTables;
+    private static final DateTimeFormatter TIME_FMT = DateTimeFormatter.ofPattern("HH:mm");
+
     @FXML
     private void initialize() {
         datePicker.setValue(LocalDate.now());
 
-        resTableCol.setCellValueFactory(c -> new SimpleLongProperty(c.getValue().getTableId()));
+        allTables = tableDao.findAll();
+        tableChoice.setItems(FXCollections.observableArrayList(allTables));
+
+        resTableCol.setCellValueFactory(c -> {
+            long tableId = c.getValue().getTableId();
+            DiningTable t = allTables.stream().filter(x -> x.getId() == tableId).findFirst().orElse(null);
+            int brojStola = (t == null) ? (int) tableId : t.getBrojStola();
+            return new SimpleLongProperty(brojStola);
+        });
         resNameCol.setCellValueFactory(c -> new SimpleStringProperty(c.getValue().getImeGosta()));
         resPhoneCol.setCellValueFactory(c -> new SimpleStringProperty(c.getValue().getBrojTelefona()));
         resTimeCol.setCellValueFactory(c -> new SimpleStringProperty(String.valueOf(c.getValue().getVrijemeDolaska())));
@@ -54,21 +67,46 @@ public class ReservationsController {
         reservationsTable.setItems(data);
         reservationsTable.getSelectionModel().selectedItemProperty().addListener((obs, o, n) -> {
             if (n != null) {
-                tableChoice.getSelectionModel().select(tableDao.findAll().stream().filter(t -> t.getId() == n.getTableId()).findFirst().orElse(null));
+                DiningTable t = allTables.stream().filter(x -> x.getId() == n.getTableId()).findFirst().orElse(null);
+                tableChoice.getSelectionModel().select(t);
                 guestField.setText(n.getImeGosta());
                 phoneField.setText(n.getBrojTelefona());
-                timeField.setText(n.getVrijemeDolaska().toString());
+                timeField.setText(n.getVrijemeDolaska().format(TIME_FMT));
                 peopleField.setText(String.valueOf(n.getBrojOsoba()));
                 noteField.setText(n.getNapomena());
             }
         });
 
-        tableChoice.setItems(FXCollections.observableArrayList(tableDao.findAll()));
+        datePicker.valueProperty().addListener((obs, o, n) -> refreshTableChoiceIfTimeValid());
+        timeField.textProperty().addListener((obs, o, n) -> refreshTableChoiceIfTimeValid());
+
         load();
+    }
+
+    private void refreshTableChoiceIfTimeValid() {
+        LocalDate date = datePicker.getValue();
+        if (date == null) return;
+
+        String raw = timeField.getText();
+        if (raw == null || raw.isBlank()) {
+            tableChoice.setItems(FXCollections.observableArrayList(allTables));
+            return;
+        }
+
+        LocalTime time;
+        try {
+            time = LocalTime.parse(raw.trim(), TIME_FMT);
+        } catch (DateTimeParseException ex) {
+            return;
+        }
+
+        List<DiningTable> available = tableDao.findAvailableAt(date, time);
+        tableChoice.setItems(FXCollections.observableArrayList(available));
     }
 
     private void load() {
         data.setAll(dao.findByDate(datePicker.getValue()));
+        refreshTableChoiceIfTimeValid();
     }
 
     @FXML
@@ -86,7 +124,7 @@ public class ReservationsController {
                     guestField.getText(),
                     phoneField.getText(),
                     datePicker.getValue(),
-                    LocalTime.parse(timeField.getText()),
+                    LocalTime.parse(timeField.getText().trim(), TIME_FMT),
                     Integer.parseInt(peopleField.getText()),
                     noteField.getText());
             dao.create(r);
@@ -106,7 +144,7 @@ public class ReservationsController {
             sel.setImeGosta(guestField.getText());
             sel.setBrojTelefona(phoneField.getText());
             sel.setDatumRezervacije(datePicker.getValue());
-            sel.setVrijemeDolaska(LocalTime.parse(timeField.getText()));
+            sel.setVrijemeDolaska(LocalTime.parse(timeField.getText().trim(), TIME_FMT));
             sel.setBrojOsoba(Integer.parseInt(peopleField.getText()));
             sel.setNapomena(noteField.getText());
             dao.update(sel);
@@ -131,6 +169,7 @@ public class ReservationsController {
         timeField.clear();
         peopleField.clear();
         noteField.clear();
+        tableChoice.setItems(FXCollections.observableArrayList(allTables));
     }
 
     @FXML

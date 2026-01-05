@@ -1,19 +1,18 @@
-INSERT INTO tables (broj_stola, broj_sjedista, status)
+INSERT INTO tables (broj_stola, broj_sjedista)
 VALUES
-    (1, 2, 'slobodan'),
-    (2, 2, 'slobodan'),
-    (3, 4, 'slobodan'),
-    (4, 4, 'slobodan'),
-    (5, 4, 'slobodan'),
-    (6, 6, 'slobodan'),
-    (7, 6, 'slobodan'),
-    (8, 8, 'slobodan'),
-    (9, 8, 'slobodan'),
-    (10, 10, 'slobodan')
-    AS new_vals(broj_stola, broj_sjedista, status)
+    (1, 2),
+    (2, 2),
+    (3, 4),
+    (4, 4),
+    (5, 4),
+    (6, 6),
+    (7, 6),
+    (8, 8),
+    (9, 8),
+    (10, 10)
+    AS new_vals(broj_stola, broj_sjedista)
 ON DUPLICATE KEY UPDATE
-                     broj_sjedista = new_vals.broj_sjedista,
-                     status        = new_vals.status;
+                     broj_sjedista = new_vals.broj_sjedista;
 
 
 INSERT INTO users (id, username, password, salt, role)

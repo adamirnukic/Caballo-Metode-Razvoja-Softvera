@@ -12,19 +12,59 @@ import java.util.List;
 public class ReservationDaoImpl implements ReservationDao {
     @Override
     public Reservation create(Reservation r) {
-        String sql = "INSERT INTO reservations(table_id, ime_gosta, broj_telefona, datum_rezervacije, vrijeme_dolaska, broj_osoba, napomena) VALUES(?,?,?,?,?,?,?)";
-        try (Connection c = DbUtil.getConnection(); PreparedStatement ps = c.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
-            ps.setLong(1, r.getTableId());
-            ps.setString(2, r.getImeGosta());
-            ps.setString(3, r.getBrojTelefona());
-            ps.setDate(4, Date.valueOf(r.getDatumRezervacije()));
-            ps.setTime(5, Time.valueOf(r.getVrijemeDolaska()));
-            ps.setInt(6, r.getBrojOsoba());
-            ps.setString(7, r.getNapomena());
-            ps.executeUpdate();
-            try (ResultSet keys = ps.getGeneratedKeys()) { if (keys.next()) r.setId(keys.getLong(1)); }
-            return r;
-        } catch (SQLException e) {
+        String seatsSql = "SELECT broj_sjedista FROM tables WHERE id=?";
+        String existsSql = "SELECT 1 FROM reservations WHERE table_id=? AND datum_rezervacije=? AND vrijeme_dolaska=? LIMIT 1";
+        String insertSql = "INSERT INTO reservations(table_id, ime_gosta, broj_telefona, datum_rezervacije, vrijeme_dolaska, broj_osoba, napomena) VALUES(?,?,?,?,?,?,?)";
+
+        try (Connection c = DbUtil.getConnection()) {
+            c.setAutoCommit(false);
+            try {
+                int seats;
+                try (PreparedStatement ps = c.prepareStatement(seatsSql)) {
+                    ps.setLong(1, r.getTableId());
+                    try (ResultSet rs = ps.executeQuery()) {
+                        if (!rs.next()) throw new IllegalArgumentException("Table not found.");
+                        seats = rs.getInt(1);
+                    }
+                }
+                if (r.getBrojOsoba() > seats) {
+                    throw new IllegalArgumentException("People count exceeds table seats (" + seats + ").");
+                }
+
+                try (PreparedStatement ps = c.prepareStatement(existsSql)) {
+                    ps.setLong(1, r.getTableId());
+                    ps.setDate(2, Date.valueOf(r.getDatumRezervacije()));
+                    ps.setTime(3, Time.valueOf(r.getVrijemeDolaska()));
+                    try (ResultSet rs = ps.executeQuery()) {
+                        if (rs.next()) {
+                            throw new IllegalArgumentException("Table is already reserved for that date and time.");
+                        }
+                    }
+                }
+
+                try (PreparedStatement ps = c.prepareStatement(insertSql, Statement.RETURN_GENERATED_KEYS)) {
+                    ps.setLong(1, r.getTableId());
+                    ps.setString(2, r.getImeGosta());
+                    ps.setString(3, r.getBrojTelefona());
+                    ps.setDate(4, Date.valueOf(r.getDatumRezervacije()));
+                    ps.setTime(5, Time.valueOf(r.getVrijemeDolaska()));
+                    ps.setInt(6, r.getBrojOsoba());
+                    ps.setString(7, r.getNapomena());
+                    ps.executeUpdate();
+                    try (ResultSet keys = ps.getGeneratedKeys()) {
+                        if (keys.next()) r.setId(keys.getLong(1));
+                    }
+                }
+
+                c.commit();
+                return r;
+            } catch (Exception ex) {
+                c.rollback();
+                throw ex;
+            } finally {
+                c.setAutoCommit(true);
+            }
+        } catch (Exception e) {
             throw new RuntimeException("create reservation failed", e);
         }
     }
@@ -88,4 +128,3 @@ public class ReservationDaoImpl implements ReservationDao {
         );
     }
 }
-

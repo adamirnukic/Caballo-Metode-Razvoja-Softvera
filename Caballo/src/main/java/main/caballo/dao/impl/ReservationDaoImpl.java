@@ -6,6 +6,7 @@ import main.caballo.util.DbUtil;
 
 import java.sql.*;
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,7 +14,17 @@ public class ReservationDaoImpl implements ReservationDao {
     @Override
     public Reservation create(Reservation r) {
         String seatsSql = "SELECT broj_sjedista FROM tables WHERE id=?";
-        String existsSql = "SELECT 1 FROM reservations WHERE table_id=? AND datum_rezervacije=? AND vrijeme_dolaska=? LIMIT 1";
+
+        String overlapSql = """
+            SELECT 1
+            FROM reservations
+            WHERE table_id=?
+              AND datum_rezervacije=?
+              AND ? >= SUBTIME(vrijeme_dolaska, '02:00:00')
+              AND ? <  ADDTIME(vrijeme_dolaska, '02:00:00')
+            LIMIT 1
+            """;
+
         String insertSql = "INSERT INTO reservations(table_id, ime_gosta, broj_telefona, datum_rezervacije, vrijeme_dolaska, broj_osoba, napomena) VALUES(?,?,?,?,?,?,?)";
 
         try (Connection c = DbUtil.getConnection()) {
@@ -31,13 +42,16 @@ public class ReservationDaoImpl implements ReservationDao {
                     throw new IllegalArgumentException("People count exceeds table seats (" + seats + ").");
                 }
 
-                try (PreparedStatement ps = c.prepareStatement(existsSql)) {
+                LocalTime desired = r.getVrijemeDolaska().withSecond(0).withNano(0);
+
+                try (PreparedStatement ps = c.prepareStatement(overlapSql)) {
                     ps.setLong(1, r.getTableId());
                     ps.setDate(2, Date.valueOf(r.getDatumRezervacije()));
-                    ps.setTime(3, Time.valueOf(r.getVrijemeDolaska()));
+                    ps.setTime(3, Time.valueOf(desired));
+                    ps.setTime(4, Time.valueOf(desired));
                     try (ResultSet rs = ps.executeQuery()) {
                         if (rs.next()) {
-                            throw new IllegalArgumentException("Table is already reserved for that date and time.");
+                            throw new IllegalArgumentException("Table is already reserved within the selected time window.");
                         }
                     }
                 }
@@ -47,7 +61,7 @@ public class ReservationDaoImpl implements ReservationDao {
                     ps.setString(2, r.getImeGosta());
                     ps.setString(3, r.getBrojTelefona());
                     ps.setDate(4, Date.valueOf(r.getDatumRezervacije()));
-                    ps.setTime(5, Time.valueOf(r.getVrijemeDolaska()));
+                    ps.setTime(5, Time.valueOf(desired));
                     ps.setInt(6, r.getBrojOsoba());
                     ps.setString(7, r.getNapomena());
                     ps.executeUpdate();
@@ -71,18 +85,73 @@ public class ReservationDaoImpl implements ReservationDao {
 
     @Override
     public boolean update(Reservation r) {
-        String sql = "UPDATE reservations SET table_id=?, ime_gosta=?, broj_telefona=?, datum_rezervacije=?, vrijeme_dolaska=?, broj_osoba=?, napomena=? WHERE id=?";
-        try (Connection c = DbUtil.getConnection(); PreparedStatement ps = c.prepareStatement(sql)) {
-            ps.setLong(1, r.getTableId());
-            ps.setString(2, r.getImeGosta());
-            ps.setString(3, r.getBrojTelefona());
-            ps.setDate(4, Date.valueOf(r.getDatumRezervacije()));
-            ps.setTime(5, Time.valueOf(r.getVrijemeDolaska()));
-            ps.setInt(6, r.getBrojOsoba());
-            ps.setString(7, r.getNapomena());
-            ps.setLong(8, r.getId());
-            return ps.executeUpdate() > 0;
-        } catch (SQLException e) {
+        String seatsSql = "SELECT broj_sjedista FROM tables WHERE id=?";
+
+        String overlapSql = """
+            SELECT 1
+            FROM reservations
+            WHERE table_id=?
+              AND datum_rezervacije=?
+              AND id <> ?
+              AND ? >= SUBTIME(vrijeme_dolaska, '02:00:00')
+              AND ? <  ADDTIME(vrijeme_dolaska, '02:00:00')
+            LIMIT 1
+            """;
+
+        String updateSql = "UPDATE reservations SET table_id=?, ime_gosta=?, broj_telefona=?, datum_rezervacije=?, vrijeme_dolaska=?, broj_osoba=?, napomena=? WHERE id=?";
+
+        try (Connection c = DbUtil.getConnection()) {
+            c.setAutoCommit(false);
+            try {
+                int seats;
+                try (PreparedStatement ps = c.prepareStatement(seatsSql)) {
+                    ps.setLong(1, r.getTableId());
+                    try (ResultSet rs = ps.executeQuery()) {
+                        if (!rs.next()) throw new IllegalArgumentException("Table not found.");
+                        seats = rs.getInt(1);
+                    }
+                }
+                if (r.getBrojOsoba() > seats) {
+                    throw new IllegalArgumentException("People count exceeds table seats (" + seats + ").");
+                }
+
+                LocalTime desired = r.getVrijemeDolaska().withSecond(0).withNano(0);
+
+                try (PreparedStatement ps = c.prepareStatement(overlapSql)) {
+                    ps.setLong(1, r.getTableId());
+                    ps.setDate(2, Date.valueOf(r.getDatumRezervacije()));
+                    ps.setLong(3, r.getId());
+                    ps.setTime(4, Time.valueOf(desired));
+                    ps.setTime(5, Time.valueOf(desired));
+                    try (ResultSet rs = ps.executeQuery()) {
+                        if (rs.next()) {
+                            throw new IllegalArgumentException("Table is already reserved within the selected time window.");
+                        }
+                    }
+                }
+
+                boolean updated;
+                try (PreparedStatement ps = c.prepareStatement(updateSql)) {
+                    ps.setLong(1, r.getTableId());
+                    ps.setString(2, r.getImeGosta());
+                    ps.setString(3, r.getBrojTelefona());
+                    ps.setDate(4, Date.valueOf(r.getDatumRezervacije()));
+                    ps.setTime(5, Time.valueOf(desired));
+                    ps.setInt(6, r.getBrojOsoba());
+                    ps.setString(7, r.getNapomena());
+                    ps.setLong(8, r.getId());
+                    updated = ps.executeUpdate() > 0;
+                }
+
+                c.commit();
+                return updated;
+            } catch (Exception ex) {
+                c.rollback();
+                throw ex;
+            } finally {
+                c.setAutoCommit(true);
+            }
+        } catch (Exception e) {
             throw new RuntimeException("update reservation failed", e);
         }
     }

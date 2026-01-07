@@ -16,6 +16,7 @@ import main.caballo.dao.impl.TableDaoImpl;
 import main.caballo.model.DiningTable;
 import main.caballo.model.Reservation;
 
+import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
@@ -45,6 +46,8 @@ public class ReservationsController {
 
     private List<DiningTable> allTables;
     private static final DateTimeFormatter TIME_FMT = DateTimeFormatter.ofPattern("HH:mm");
+    private static final Duration RESERVATION_BLOCK = Duration.ofHours(2);
+
 
     @FXML
     private void initialize() {
@@ -100,7 +103,7 @@ public class ReservationsController {
             return;
         }
 
-        List<DiningTable> available = tableDao.findAvailableAt(date, time);
+        List<DiningTable> available = tableDao.findAvailableAt(date, time, RESERVATION_BLOCK);
         tableChoice.setItems(FXCollections.observableArrayList(available));
     }
 

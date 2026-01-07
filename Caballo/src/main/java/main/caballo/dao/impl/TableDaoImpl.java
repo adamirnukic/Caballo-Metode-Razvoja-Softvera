@@ -31,6 +31,11 @@ public class TableDaoImpl implements TableDao {
 
     @Override
     public List<DiningTable> findAvailableAt(LocalDate date, LocalTime time, java.time.Duration blockDuration) {
+        return findAvailableAtExcludingReservation(date, time, blockDuration, 0);
+    }
+
+    @Override
+    public List<DiningTable> findAvailableAtExcludingReservation(LocalDate date, LocalTime time, java.time.Duration blockDuration, long excludeReservationId) {
         if (date == null || time == null) throw new IllegalArgumentException("date/time required");
 
         long blockMinutes = (blockDuration == null) ? 0 : Math.max(0, blockDuration.toMinutes());
@@ -44,6 +49,7 @@ public class TableDaoImpl implements TableDao {
                 FROM reservations r
                 WHERE r.table_id = t.id
                   AND r.datum_rezervacije = ?
+                  AND (? = 0 OR r.id <> ?)
                   AND (
                         ? >= SUBTIME(r.vrijeme_dolaska, SEC_TO_TIME(? * 60))
                     AND ? <  ADDTIME(r.vrijeme_dolaska, SEC_TO_TIME(? * 60))
@@ -53,10 +59,12 @@ public class TableDaoImpl implements TableDao {
             """;
         try (Connection c = DbUtil.getConnection(); PreparedStatement ps = c.prepareStatement(sql)) {
             ps.setDate(1, Date.valueOf(date));
-            ps.setTime(2, Time.valueOf(time));
-            ps.setLong(3, effectiveMinutes);
+            ps.setLong(2, excludeReservationId);
+            ps.setLong(3, excludeReservationId);
             ps.setTime(4, Time.valueOf(time));
             ps.setLong(5, effectiveMinutes);
+            ps.setTime(6, Time.valueOf(time));
+            ps.setLong(7, effectiveMinutes);
 
             try (ResultSet rs = ps.executeQuery()) {
                 List<DiningTable> list = new ArrayList<>();

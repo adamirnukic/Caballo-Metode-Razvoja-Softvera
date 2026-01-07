@@ -11,4 +11,6 @@ public interface TableDao {
     List<DiningTable> findAll();
 
     List<DiningTable> findAvailableAt(LocalDate date, LocalTime time, Duration blockDuration);
+
+    List<DiningTable> findAvailableAtExcludingReservation(LocalDate date, LocalTime time, Duration blockDuration, long excludeReservationId);
 }

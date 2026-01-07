@@ -90,9 +90,14 @@ public class ReservationsController {
         LocalDate date = datePicker.getValue();
         if (date == null) return;
 
+        DiningTable currentlySelectedTable = tableChoice.getSelectionModel().getSelectedItem();
+
         String raw = timeField.getText();
         if (raw == null || raw.isBlank()) {
             tableChoice.setItems(FXCollections.observableArrayList(allTables));
+            if (currentlySelectedTable != null) {
+                tableChoice.getSelectionModel().select(currentlySelectedTable);
+            }
             return;
         }
 
@@ -103,8 +108,20 @@ public class ReservationsController {
             return;
         }
 
-        List<DiningTable> available = tableDao.findAvailableAt(date, time, RESERVATION_BLOCK);
-        tableChoice.setItems(FXCollections.observableArrayList(available));
+        Reservation selectedReservation = reservationsTable.getSelectionModel().getSelectedItem();
+        long excludeId = (selectedReservation == null) ? 0 : selectedReservation.getId();
+
+        List<DiningTable> available = tableDao.findAvailableAtExcludingReservation(date, time, RESERVATION_BLOCK, excludeId);
+        ObservableList<DiningTable> items = FXCollections.observableArrayList(available);
+
+        if (currentlySelectedTable != null && items.stream().noneMatch(t -> t.getId() == currentlySelectedTable.getId())) {
+            items.add(0, currentlySelectedTable);
+        }
+
+        tableChoice.setItems(items);
+        if (currentlySelectedTable != null) {
+            tableChoice.getSelectionModel().select(currentlySelectedTable);
+        }
     }
 
     private void load() {

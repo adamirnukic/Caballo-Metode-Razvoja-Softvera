@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml"
+      fx:controller="main.caballo.controller.ShiftsController"
+      spacing="12" prefWidth="1200" prefHeight="650"
+      stylesheets="@app.css"
+      styleClass="app-root">
+
+    <padding>
+        <Insets top="14" right="14" bottom="14" left="14"/>
+    </padding>
+
+    <HBox spacing="10" styleClass="app-header">
+        <VBox spacing="3">
+            <Label text="Smjene" styleClass="app-title"/>
+            <Label text="Uredi smjene po korisniku i datumu" styleClass="muted"/>
+        </VBox>
+        <Region HBox.hgrow="ALWAYS"/>
+        <Button text="Back" onAction="#goBack" styleClass="btn-secondary"/>
+    </HBox>
+
+    <HBox spacing="12" VBox.vgrow="ALWAYS">
+        <VBox spacing="8" styleClass="card" HBox.hgrow="ALWAYS" VBox.vgrow="ALWAYS">
+            <Label text="Korisnici" styleClass="card-title"/>
+            <TableView fx:id="usersTable" VBox.vgrow="ALWAYS">
+                <columns>
+                    <TableColumn fx:id="userIdCol" text="ID" prefWidth="70"/>
+                    <TableColumn fx:id="usernameCol" text="Username" prefWidth="200"/>
+                    <TableColumn fx:id="roleCol" text="Role" prefWidth="120"/>
+                </columns>
+            </TableView>
+        </VBox>
+
+        <VBox spacing="10" styleClass="card" prefWidth="420" VBox.vgrow="ALWAYS">
+            <Label text="Detalji smjene" styleClass="card-title"/>
+
+            <GridPane hgap="10" vgap="10">
+                <columnConstraints>
+                    <ColumnConstraints minWidth="120" halignment="RIGHT"/>
+                    <ColumnConstraints hgrow="ALWAYS"/>
+                </columnConstraints>
+
+                <Label text="Datum:" GridPane.rowIndex="0" GridPane.columnIndex="0"/>
+                <DatePicker fx:id="datePicker" GridPane.rowIndex="0" GridPane.columnIndex="1"/>
+
+                <Label text="Tip smjene:" GridPane.rowIndex="1" GridPane.columnIndex="0"/>
+                <ChoiceBox fx:id="shiftTypeChoice" GridPane.rowIndex="1" GridPane.columnIndex="1"/>
+
+                <Label text="Napomena:" GridPane.rowIndex="2" GridPane.columnIndex="0"/>
+                <TextArea fx:id="noteArea" prefRowCount="4" wrapText="true" GridPane.rowIndex="2" GridPane.columnIndex="1"/>
+            </GridPane>
+
+            <HBox spacing="10">
+                <Button fx:id="saveBtn" text="Save" onAction="#save" styleClass="btn-primary"/>
+            </HBox>
+        </VBox>
+    </HBox>
+</VBox>

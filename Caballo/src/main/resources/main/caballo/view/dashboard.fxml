@@ -20,7 +20,8 @@
         </VBox>
         <Region HBox.hgrow="ALWAYS"/>
         <Button fx:id="usersBtn" text="Users (Admin)" onAction="#openUsers" styleClass="btn-secondary"/>
-        <Button fx:id="reportsBtn" text="Reports" onAction="#openReports" styleClass="btn-secondary"/>
+        <Button text="Smjene" onAction="#openShifts" styleClass="btn-secondary"/>
+        <Button text="Reports" onAction="#openReports" styleClass="btn-secondary"/>
         <Button text="Logout" onAction="#logout" styleClass="btn-secondary"/>
     </HBox>
 
@@ -48,7 +49,5 @@
         </HBox>
 
         <Separator/>
-
-        <Label text="Select an option to proceed." styleClass="muted"/>
     </VBox>
 </VBox>

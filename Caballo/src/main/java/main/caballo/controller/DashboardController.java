@@ -13,13 +13,9 @@ import javafx.scene.control.Label;
 
 public class DashboardController {
     @FXML private Label welcomeLabel;
-    @FXML private Button reportsBtn;
     @FXML private Button usersBtn;
 
-    private User currentUser;
-
     public void init(User user) {
-        this.currentUser = user;
         welcomeLabel.setText("Welcome, " + user.getUsername() + " (" + user.getRole() + ")");
         boolean isAdmin = user.getRole() == Role.ADMIN;
         usersBtn.setVisible(isAdmin);
@@ -51,6 +47,11 @@ public class DashboardController {
     }
 
     @FXML
+    private void openShifts(ActionEvent e) {
+        loadScene("/main/caballo/view/shifts.fxml");
+    }
+
+    @FXML
     private void logout(ActionEvent e) {
         CaballoApplication.showLogin();
     }
@@ -64,5 +65,4 @@ public class DashboardController {
             throw new RuntimeException("Failed to load: " + fxml, ex);
         }
     }
-
 }

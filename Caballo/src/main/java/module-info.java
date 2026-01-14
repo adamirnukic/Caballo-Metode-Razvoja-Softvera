@@ -17,8 +17,9 @@ module main.caballo {
 
     opens main.caballo to javafx.fxml;
     exports main.caballo;
-
     exports main.caballo.controller;
+    exports main.caballo.model;
+    exports main.caballo.dao;
 
     opens main.caballo.controller to javafx.fxml;
 }

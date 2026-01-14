@@ -44,6 +44,17 @@ ON DUPLICATE KEY UPDATE
                      salt     = new_users.salt,
                      role     = new_users.role;
 
+INSERT INTO shifts (user_id, datum, tip_smjene, napomena)
+VALUES
+    (1, '2025-12-22', 'slobodan', 'Seed (ponedjeljak)'),
+    (2, '2025-12-22', 'slobodan', 'Seed (ponedjeljak)'),
+    (3, '2025-12-22', 'slobodan', 'Seed (ponedjeljak)'),
+    (4, '2025-12-22', 'slobodan', 'Seed (ponedjeljak)')
+    AS new_shifts(user_id, datum, tip_smjene, napomena)
+ON DUPLICATE KEY UPDATE
+                     tip_smjene = new_shifts.tip_smjene,
+                     napomena   = new_shifts.napomena;
+
 
 INSERT INTO menu_items (id, naziv, opis, cijena, kategorija, current_qty, is_active)
 VALUES

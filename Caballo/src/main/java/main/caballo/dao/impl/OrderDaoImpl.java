@@ -31,7 +31,7 @@ public class OrderDaoImpl implements OrderDao {
     public boolean addItem(OrderItem item) {
         String insert = "INSERT INTO order_items(order_id, item_id, kolicina) VALUES(?,?,?)";
         String updateTotal = "UPDATE orders SET ukupno = ukupno + (SELECT cijena FROM menu_items WHERE id=?) * ? WHERE id=?";
-        String updateStock = "UPDATE menu_items SET current_qty = current_qty - ? WHERE id=?";
+        String updateStock = "UPDATE menu_items SET current_qty = current_qty - ? WHERE id=? AND item_type='DRINK'";
 
         try (Connection c = DbUtil.getConnection()) {
             c.setAutoCommit(false);
@@ -113,4 +113,3 @@ public class OrderDaoImpl implements OrderDao {
         }
     }
 }
-

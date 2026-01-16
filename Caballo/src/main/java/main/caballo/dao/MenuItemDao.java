@@ -9,6 +9,6 @@ public interface MenuItemDao {
     boolean update(MenuItem item);
     boolean delete(long id);
     List<MenuItem> findAll();
-    List<MenuItem> search(String query, String category);
+    List<MenuItem> search(String query);
     void addDelivery(long itemId, int quantity);
 }

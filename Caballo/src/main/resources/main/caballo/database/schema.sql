@@ -15,6 +15,7 @@ CREATE TABLE IF NOT EXISTS menu_items (
     opis TEXT,
     cijena DECIMAL(10,2) NOT NULL,
     kategorija VARCHAR(100) NOT NULL,
+    item_type ENUM('FOOD','DRINK') NOT NULL DEFAULT 'FOOD',
     current_qty INT NOT NULL DEFAULT 0,
     is_active TINYINT NOT NULL DEFAULT 1
 );
@@ -65,7 +66,6 @@ CREATE TABLE IF NOT EXISTS shifts (
     CONSTRAINT uq_shift_user_date UNIQUE (user_id, datum)
 );
 
-
 CREATE TABLE IF NOT EXISTS item_stock_movements (
     id BIGINT PRIMARY KEY AUTO_INCREMENT,
     item_id BIGINT NOT NULL,
@@ -100,7 +100,8 @@ FROM menu_items mi
          LEFT JOIN item_stock_movements cur
                    ON cur.item_id = mi.id
                        AND cur.datum = p_date
-WHERE cur.id IS NULL;
+WHERE cur.id IS NULL
+  AND mi.item_type = 'DRINK';
 END $$
 
 DELIMITER ;
@@ -114,7 +115,8 @@ BEGIN
 UPDATE item_stock_movements sm
     JOIN menu_items mi ON mi.id = sm.item_id
     SET sm.physical_closing_qty = mi.current_qty
-WHERE sm.datum = p_date;
+WHERE sm.datum = p_date
+  AND mi.item_type = 'DRINK';
 END$$
 
 DELIMITER ;

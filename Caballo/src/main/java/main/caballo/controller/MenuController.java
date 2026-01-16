@@ -7,6 +7,7 @@ import main.caballo.dao.ReportDao;
 import main.caballo.dao.impl.MenuItemDaoImpl;
 import main.caballo.dao.impl.ReportDaoImpl;
 import main.caballo.model.MenuItem;
+import main.caballo.model.Pice;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
@@ -14,7 +15,6 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
-
 import java.time.LocalDate;
 
 public class MenuController {
@@ -33,6 +33,8 @@ public class MenuController {
     @FXML private TextArea descArea;
     @FXML private TextField searchField;
 
+    @FXML private CheckBox drinkCheck;
+
     private final MenuItemDao dao = new MenuItemDaoImpl();
     private final ReportDao reportDao = new ReportDaoImpl();
     private final ObservableList<MenuItem> data = FXCollections.observableArrayList();
@@ -43,7 +45,23 @@ public class MenuController {
         descCol.setCellValueFactory(c -> new SimpleStringProperty(c.getValue().getDescription()));
         priceCol.setCellValueFactory(c -> new SimpleDoubleProperty(c.getValue().getPrice()));
         catCol.setCellValueFactory(c -> new SimpleStringProperty(c.getValue().getCategory()));
-        qtyCol.setCellValueFactory(c -> new SimpleIntegerProperty(c.getValue().getCurrentQty()));
+        qtyCol.setCellValueFactory(c -> {
+            if (c.getValue() instanceof Pice p) {
+                return new SimpleIntegerProperty(p.getCurrentQty());
+            }
+            return null;
+        });
+        qtyCol.setCellFactory(col -> new TableCell<>() {
+            @Override
+            protected void updateItem(Number item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty || item == null) {
+                    setText("");
+                } else {
+                    setText(String.valueOf(item.intValue()));
+                }
+            }
+        });
 
         table.setItems(data);
         refresh();
@@ -54,9 +72,35 @@ public class MenuController {
                 priceField.setText(String.valueOf(n.getPrice()));
                 categoryField.setText(n.getCategory());
                 descArea.setText(n.getDescription());
-                qtyField.setText(String.valueOf(n.getCurrentQty()));
+
+                boolean isDrink = n instanceof Pice;
+                drinkCheck.setSelected(isDrink);
+
+                if (isDrink) {
+                    Pice p = (Pice) n;
+                    qtyField.setText(String.valueOf(p.getCurrentQty()));
+                    qtyField.setDisable(false);
+                    deliveryQtyField.setDisable(false);
+                } else {
+                    qtyField.setText("0");
+                    qtyField.setDisable(true);
+                    deliveryQtyField.setDisable(true);
+                }
             } else {
                 clearForm();
+            }
+        });
+
+        drinkCheck.selectedProperty().addListener((obs, oldVal, newVal) -> {
+            if (table.getSelectionModel().getSelectedItem() != null) return;
+            if (Boolean.TRUE.equals(newVal)) {
+                qtyField.setDisable(false);
+                deliveryQtyField.setDisable(false);
+                if (qtyField.getText() == null || qtyField.getText().isBlank()) qtyField.setText("0");
+            } else {
+                qtyField.setText("0");
+                qtyField.setDisable(true);
+                deliveryQtyField.setDisable(true);
             }
         });
 
@@ -70,24 +114,37 @@ public class MenuController {
 
     private void search() {
         String q = searchField.getText();
-        data.setAll(dao.search(q, null));
+        data.setAll(dao.search(q));
         table.refresh();
     }
 
     @FXML
     private void addItem(ActionEvent e) {
         try {
-            int currentQty = Integer.parseInt(qtyField.getText());
-            if (currentQty < 0) throw new IllegalArgumentException("Qty must be >= 0");
+            String category = categoryField.getText();
+            MenuItem m;
 
-            MenuItem m = new MenuItem(
-                    0,
-                    nameField.getText(),
-                    descArea.getText(),
-                    Double.parseDouble(priceField.getText()),
-                    categoryField.getText(),
-                    currentQty
-            );
+            if (drinkCheck.isSelected()) {
+                int currentQty = Integer.parseInt(qtyField.getText());
+                if (currentQty < 0) throw new IllegalArgumentException("Qty must be >= 0");
+                m = new Pice(
+                        0,
+                        nameField.getText(),
+                        descArea.getText(),
+                        Double.parseDouble(priceField.getText()),
+                        category,
+                        currentQty
+                );
+            } else {
+                m = new MenuItem(
+                        0,
+                        nameField.getText(),
+                        descArea.getText(),
+                        Double.parseDouble(priceField.getText()),
+                        category
+                );
+            }
+
             dao.create(m);
             refresh();
             clearForm();
@@ -108,7 +165,13 @@ public class MenuController {
             sel.setDescription(descArea.getText());
             sel.setPrice(Double.parseDouble(priceField.getText()));
             sel.setCategory(categoryField.getText());
-            sel.setCurrentQty(Integer.parseInt(qtyField.getText()));
+
+            if (sel instanceof Pice p) {
+                p.setCurrentQty(Integer.parseInt(qtyField.getText()));
+            }
+
+            drinkCheck.setSelected(sel instanceof Pice);
+
             dao.update(sel);
             refresh();
         } catch (Exception ex) {
@@ -157,6 +220,10 @@ public class MenuController {
             showError("Select an item.");
             return;
         }
+        if (!(sel instanceof Pice drink)) {
+            showError("Delivery možeš dodati samo za pića.");
+            return;
+        }
         if (deliveryQtyField == null) {
             showError("Delivery quantity field not configured.");
             return;
@@ -178,7 +245,7 @@ public class MenuController {
             dao.addDelivery(sel.getId(), qty);
             reportDao.addReceivedQty(LocalDate.now(), sel.getId(), qty);
 
-            sel.setCurrentQty(sel.getCurrentQty() + qty);
+            drink.setCurrentQty(drink.getCurrentQty() + qty);
             table.refresh();
             deliveryQtyField.clear();
         } catch (Exception ex) {
@@ -190,9 +257,15 @@ public class MenuController {
         nameField.clear();
         priceField.clear();
         categoryField.clear();
-        qtyField.clear();
         descArea.clear();
+
+        drinkCheck.setSelected(false);
+
+        qtyField.setText("0");
+        qtyField.setDisable(true);
+
         deliveryQtyField.clear();
+        deliveryQtyField.setDisable(true);
     }
 
     @FXML
@@ -204,3 +277,4 @@ public class MenuController {
         new Alert(Alert.AlertType.ERROR, msg, ButtonType.OK).showAndWait();
     }
 }
+

@@ -205,7 +205,7 @@ public class ReportDaoImpl implements ReportDao {
         String updateMenuSql = """
         UPDATE menu_items
         SET current_qty = ?
-        WHERE naziv = ?
+        WHERE naziv = ? AND item_type = 'DRINK'
         """;
 
         try (Connection c = DbUtil.getConnection()) {

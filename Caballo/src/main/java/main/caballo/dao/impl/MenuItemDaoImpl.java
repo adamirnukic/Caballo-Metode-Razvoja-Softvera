@@ -2,6 +2,7 @@ package main.caballo.dao.impl;
 
 import main.caballo.dao.MenuItemDao;
 import main.caballo.model.MenuItem;
+import main.caballo.model.Pice;
 import main.caballo.util.DbUtil;
 
 import java.sql.*;
@@ -11,16 +12,29 @@ import java.util.List;
 
 public class MenuItemDaoImpl implements MenuItemDao {
 
+    private static final String TYPE_FOOD = "FOOD";
+    private static final String TYPE_DRINK = "DRINK";
+
+    private static String inferTypeFromItem(MenuItem item) {
+        return (item instanceof Pice) ? TYPE_DRINK : TYPE_FOOD;
+    }
+
     @Override
     public MenuItem create(MenuItem item) {
-        String sql = "INSERT INTO menu_items(naziv, opis, cijena, kategorija, current_qty) VALUES(?,?,?,?,?)";
+        String sql = "INSERT INTO menu_items(naziv, opis, cijena, kategorija, item_type, current_qty) VALUES(?,?,?,?,?,?)";
         try (Connection c = DbUtil.getConnection();
              PreparedStatement ps = c.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             ps.setString(1, item.getName());
             ps.setString(2, item.getDescription());
             ps.setDouble(3, item.getPrice());
             ps.setString(4, item.getCategory());
-            ps.setInt(5, item.getCurrentQty());
+
+            String type = inferTypeFromItem(item);
+            ps.setString(5, type);
+
+            int qty = (item instanceof Pice p) ? p.getCurrentQty() : 0;
+            ps.setInt(6, qty);
+
             ps.executeUpdate();
             try (ResultSet keys = ps.getGeneratedKeys()) {
                 if (keys.next()) item.setId(keys.getLong(1));
@@ -33,15 +47,21 @@ public class MenuItemDaoImpl implements MenuItemDao {
 
     @Override
     public boolean update(MenuItem item) {
-        String sql = "UPDATE menu_items SET naziv=?, opis=?, cijena=?, kategorija=?, current_qty=? WHERE id=?";
+        String sql = "UPDATE menu_items SET naziv=?, opis=?, cijena=?, kategorija=?, item_type=?, current_qty=? WHERE id=?";
         try (Connection c = DbUtil.getConnection();
              PreparedStatement ps = c.prepareStatement(sql)) {
             ps.setString(1, item.getName());
             ps.setString(2, item.getDescription());
             ps.setDouble(3, item.getPrice());
             ps.setString(4, item.getCategory());
-            ps.setInt(5, item.getCurrentQty());
-            ps.setLong(6, item.getId());
+
+            String type = inferTypeFromItem(item);
+            ps.setString(5, type);
+
+            int qty = (item instanceof Pice p) ? p.getCurrentQty() : 0;
+            ps.setInt(6, qty);
+
+            ps.setLong(7, item.getId());
             return ps.executeUpdate() > 0;
         } catch (SQLException e) {
             throw new RuntimeException("MenuItem update failed", e);
@@ -62,7 +82,7 @@ public class MenuItemDaoImpl implements MenuItemDao {
 
     @Override
     public List<MenuItem> findAll() {
-        String sql = "SELECT id, naziv, opis, cijena, kategorija, current_qty, is_active  FROM menu_items WHERE is_active = 1 ORDER BY kategorija, naziv";
+        String sql = "SELECT id, naziv, opis, cijena, kategorija, item_type, current_qty, is_active FROM menu_items WHERE is_active = 1 ORDER BY kategorija, naziv";
         try (Connection c = DbUtil.getConnection();
              PreparedStatement ps = c.prepareStatement(sql);
              ResultSet rs = ps.executeQuery()) {
@@ -75,16 +95,12 @@ public class MenuItemDaoImpl implements MenuItemDao {
     }
 
     @Override
-    public List<MenuItem> search(String query, String category) {
-        StringBuilder sb = new StringBuilder("SELECT id, naziv, opis, cijena, kategorija, current_qty, is_active FROM menu_items WHERE is_active = 1 ");
+    public List<MenuItem> search(String query) {
+        StringBuilder sb = new StringBuilder("SELECT id, naziv, opis, cijena, kategorija, item_type, current_qty, is_active FROM menu_items WHERE is_active = 1 ");
         List<Object> params = new ArrayList<>();
         if (query != null && !query.isBlank()) {
             sb.append("AND LOWER(naziv) LIKE ? ");
             params.add("%" + query.toLowerCase() + "%");
-        }
-        if (category != null && !category.isBlank()) {
-            sb.append("AND kategorija = ? ");
-            params.add(category);
         }
         sb.append("ORDER BY kategorija, naziv");
 
@@ -102,13 +118,25 @@ public class MenuItemDaoImpl implements MenuItemDao {
     }
 
     private MenuItem map(ResultSet rs) throws SQLException {
+        String type = rs.getString("item_type");
+        if (TYPE_DRINK.equalsIgnoreCase(type)) {
+            return new Pice(
+                    rs.getLong("id"),
+                    rs.getString("naziv"),
+                    rs.getString("opis"),
+                    rs.getDouble("cijena"),
+                    rs.getString("kategorija"),
+                    rs.getInt("current_qty"),
+                    rs.getBoolean("is_active")
+            );
+        }
+
         return new MenuItem(
                 rs.getLong("id"),
                 rs.getString("naziv"),
                 rs.getString("opis"),
                 rs.getDouble("cijena"),
                 rs.getString("kategorija"),
-                rs.getInt("current_qty"),
                 rs.getBoolean("is_active")
         );
     }
@@ -117,7 +145,7 @@ public class MenuItemDaoImpl implements MenuItemDao {
     public void addDelivery(long itemId, int quantity) {
         LocalDate today = LocalDate.now();
         String ensure = "CALL ensure_item_stock_for_date(?)";
-        String update = "UPDATE menu_items SET current_qty = current_qty + ? WHERE id = ?";
+        String update = "UPDATE menu_items SET current_qty = current_qty + ? WHERE id = ? AND item_type = 'DRINK'";
 
         try (Connection c = DbUtil.getConnection()) {
             c.setAutoCommit(false);
@@ -138,4 +166,3 @@ public class MenuItemDaoImpl implements MenuItemDao {
         }
     }
 }
-

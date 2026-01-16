@@ -16,6 +16,7 @@ import main.caballo.dao.impl.OrderDaoImpl;
 import main.caballo.model.MenuItem;
 import main.caballo.model.Order;
 import main.caballo.model.OrderItem;
+import main.caballo.model.Pice;
 
 import java.time.format.DateTimeFormatter;
 
@@ -78,7 +79,7 @@ public class OrdersController {
     }
 
     private void refreshOrders() { orders.setAll(orderDao.findRecent(50)); }
-    private void refreshMenu() { menu.setAll(menuDao.search(searchMenuField.getText(), null)); }
+    private void refreshMenu() { menu.setAll(menuDao.search(searchMenuField.getText())); }
 
     @FXML
     private void newOrder(ActionEvent e) {
@@ -99,9 +100,11 @@ public class OrdersController {
         try {
             int qty = Integer.parseInt(qtyField.getText());
             if (qty <= 0) throw new IllegalArgumentException("Qty must be > 0");
-            if (qty > chosen.getCurrentQty()) {
-                alert("Nema dovoljno na stanju. Trenutno: " + chosen.getCurrentQty());
-                return;
+            if (chosen instanceof Pice drink) {
+                if (qty > drink.getCurrentQty()) {
+                    alert("Nema dovoljno na stanju. Trenutno: " + drink.getCurrentQty());
+                    return;
+                }
             }
 
             OrderItem it = new OrderItem(0, sel.getId(), chosen.getId(), chosen.getName(), qty, chosen.getPrice());

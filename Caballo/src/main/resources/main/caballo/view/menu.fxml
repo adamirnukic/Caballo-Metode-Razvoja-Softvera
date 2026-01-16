@@ -56,7 +56,10 @@
                 <TextField fx:id="priceField"/>
 
                 <Label text="Category" styleClass="muted"/>
-                <TextField fx:id="categoryField"/>
+                <HBox spacing="8" styleClass="toolbar">
+                    <TextField fx:id="categoryField" HBox.hgrow="ALWAYS"/>
+                    <CheckBox fx:id="drinkCheck" text="Piće" />
+                </HBox>
 
                 <Label text="Qty" styleClass="muted"/>
                 <TextField fx:id="qtyField"/>

@@ -6,26 +6,23 @@ public class MenuItem {
     private String description;
     private double price;
     private String category;
-    private int currentQty;
     private boolean active = true;
 
-    public MenuItem(long id, String name, String description, double price, String category, int currentQty, boolean active) {
+    public MenuItem(long id, String name, String description, double price, String category, boolean active) {
         this.id = id;
         this.name = name;
         this.description = description;
         this.price = price;
         this.category = category;
-        this.currentQty = currentQty;
         this.active = active;
     }
 
-    public MenuItem(long id, String name, String description, double price, String category, int currentQty) {
+    public MenuItem(long id, String name, String description, double price, String category) {
         this.id = id;
         this.name = name;
         this.description = description;
         this.price = price;
         this.category = category;
-        this.currentQty = currentQty;
     }
 
     public long getId() {
@@ -66,14 +63,6 @@ public class MenuItem {
 
     public void setCategory(String category) {
         this.category = category;
-    }
-
-    public int getCurrentQty() {
-        return currentQty;
-    }
-
-    public void setCurrentQty(int currentQty) {
-        this.currentQty = currentQty;
     }
 
     public boolean isActive() {

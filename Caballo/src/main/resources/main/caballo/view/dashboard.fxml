@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.chart.PieChart?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
@@ -49,5 +50,13 @@
         </HBox>
 
         <Separator/>
+
+        <HBox spacing="12">
+            <VBox spacing="8" styleClass="card" HBox.hgrow="ALWAYS">
+                <Label text="Top items (today)" styleClass="card-title"/>
+                <Label fx:id="topItemsEmptyLabel" text="" styleClass="muted" wrapText="true"/>
+                <PieChart fx:id="topItemsPieChart" prefHeight="260" legendVisible="true" labelsVisible="true"/>
+            </VBox>
+        </HBox>
     </VBox>
 </VBox>

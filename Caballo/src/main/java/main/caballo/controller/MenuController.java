@@ -57,8 +57,30 @@ public class MenuController {
                 super.updateItem(item, empty);
                 if (empty || item == null) {
                     setText("");
-                } else {
-                    setText(String.valueOf(item.intValue()));
+                    return;
+                }
+                setText(String.valueOf(item.intValue()));
+            }
+        });
+
+        table.setRowFactory(tv -> new TableRow<>() {
+            @Override
+            protected void updateItem(MenuItem item, boolean empty) {
+                super.updateItem(item, empty);
+
+                getStyleClass().removeAll("low-stock-row", "critical-stock-row");
+
+                if (empty || item == null) {
+                    return;
+                }
+
+                if (item instanceof Pice p) {
+                    int qty = p.getCurrentQty();
+                    if (qty <= 10) {
+                        getStyleClass().add("critical-stock-row");
+                    } else if (qty <= 20) {
+                        getStyleClass().add("low-stock-row");
+                    }
                 }
             }
         });

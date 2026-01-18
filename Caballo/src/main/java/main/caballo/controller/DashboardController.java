@@ -3,9 +3,13 @@ package main.caballo.controller;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.chart.PieChart;
+import javafx.scene.control.ListView;
 import main.caballo.CaballoApplication;
+import main.caballo.dao.MenuItemDao;
 import main.caballo.dao.ReportDao;
+import main.caballo.dao.impl.MenuItemDaoImpl;
 import main.caballo.dao.impl.ReportDaoImpl;
+import main.caballo.model.Pice;
 import main.caballo.model.Role;
 import main.caballo.model.User;
 import javafx.event.ActionEvent;
@@ -17,6 +21,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 
 import java.time.LocalDate;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 
@@ -27,13 +32,45 @@ public class DashboardController {
     @FXML private PieChart topItemsPieChart;
     @FXML private Label topItemsEmptyLabel;
 
+    @FXML private ListView<String> lowStockList;
+    @FXML private Label lowStockEmptyLabel;
+
+    private static final int LOW_STOCK_THRESHOLD = 20;
+    private static final int CRITICAL_STOCK_THRESHOLD = 10;
+
     private final ReportDao reportDao = new ReportDaoImpl();
+    private final MenuItemDao menuItemDao = new MenuItemDaoImpl();
 
     public void init(User user) {
         welcomeLabel.setText("Welcome, " + user.getUsername() + " (" + user.getRole() + ")");
         boolean isAdmin = user.getRole() == Role.ADMIN;
         usersBtn.setVisible(isAdmin);
+
+        if (lowStockList != null) {
+            lowStockList.setCellFactory(lv -> new javafx.scene.control.ListCell<>() {
+                @Override
+                protected void updateItem(String item, boolean empty) {
+                    super.updateItem(item, empty);
+
+                    getStyleClass().removeAll("low-stock-item", "critical-stock-item");
+
+                    if (empty || item == null) {
+                        setText(null);
+                        return;
+                    }
+
+                    setText(item);
+                    if (item.startsWith("[CRITICAL]")) {
+                        getStyleClass().add("critical-stock-item");
+                    } else if (item.startsWith("[LOW]")) {
+                        getStyleClass().add("low-stock-item");
+                    }
+                }
+            });
+        }
+
         loadTopItemsForToday();
+        loadLowStockItems();
     }
 
     private void loadTopItemsForToday() {
@@ -55,6 +92,32 @@ public class DashboardController {
             topItemsEmptyLabel.setText(empty ? "No orders yet for today." : "");
         } catch (Exception ex) {
             topItemsEmptyLabel.setText("Unable to load top items.");
+        }
+    }
+
+    private void loadLowStockItems() {
+        try {
+            var low = menuItemDao.findAll().stream()
+                    .filter(i -> i instanceof Pice)
+                    .map(i -> (Pice) i)
+                    .filter(p -> p.getCurrentQty() <= LOW_STOCK_THRESHOLD)
+                    .sorted(Comparator.comparingInt(Pice::getCurrentQty))
+                    .map(p -> {
+                        String badge = p.getCurrentQty() <= CRITICAL_STOCK_THRESHOLD ? "CRITICAL" : "LOW";
+                        return String.format("[%s] %s (%d)", badge, p.getName(), p.getCurrentQty());
+                    })
+                    .toList();
+
+            lowStockList.setItems(FXCollections.observableArrayList(low));
+
+            boolean empty = low.isEmpty();
+            lowStockList.setVisible(!empty);
+            lowStockList.setManaged(!empty);
+            lowStockEmptyLabel.setText(empty ? "All good — no drinks with low stock." : "");
+        } catch (Exception ex) {
+            lowStockList.setVisible(false);
+            lowStockList.setManaged(false);
+            lowStockEmptyLabel.setText("Unable to load low stock items.");
         }
     }
 

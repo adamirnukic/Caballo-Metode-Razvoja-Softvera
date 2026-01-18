@@ -237,3 +237,25 @@
 .table-view:focused .table-row-cell.critical-stock-row:filled:selected {
     -fx-background-color: rgba(220, 38, 38, 0.26);
 }
+
+.list-view .list-cell.low-stock-item {
+    -fx-text-fill: #B45309;
+    -fx-font-weight: 700;
+    -fx-background-color: rgba(245, 158, 11, 0.12);
+}
+
+.list-view .list-cell.critical-stock-item {
+    -fx-text-fill: #DC2626;
+    -fx-font-weight: 800;
+    -fx-background-color: rgba(220, 38, 38, 0.11);
+}
+
+.list-view .list-cell.low-stock-item:selected {
+    -fx-text-fill: #B45309;
+    -fx-background-color: rgba(245, 158, 11, 0.22);
+}
+
+.list-view .list-cell.critical-stock-item:selected {
+    -fx-text-fill: #DC2626;
+    -fx-background-color: rgba(220, 38, 38, 0.20);
+}

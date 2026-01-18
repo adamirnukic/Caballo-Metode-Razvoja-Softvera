@@ -57,6 +57,15 @@
                 <Label fx:id="topItemsEmptyLabel" text="" styleClass="muted" wrapText="true"/>
                 <PieChart fx:id="topItemsPieChart" prefHeight="260" legendVisible="true" labelsVisible="true"/>
             </VBox>
+
+            <VBox spacing="8" styleClass="card" HBox.hgrow="ALWAYS">
+                <Label text="Low stock (drinks)" styleClass="card-title"/>
+                <Label fx:id="lowStockEmptyLabel" text="" styleClass="muted" wrapText="true"/>
+                <ListView fx:id="lowStockList" prefHeight="260" />
+                <HBox spacing="10">
+                    <Button text="Open Menu" onAction="#openMenu" styleClass="btn-primary" />
+                </HBox>
+            </VBox>
         </HBox>
     </VBox>
 </VBox>

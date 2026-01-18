@@ -66,6 +66,6 @@ public class OrderItem {
     }
 
     public double getUkupno() {
-        return cijena * kolicina;
+        return Math.round((cijena * kolicina) * 100.0) / 100.0;
     }
 }

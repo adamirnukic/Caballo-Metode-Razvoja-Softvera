@@ -31,7 +31,7 @@ public class ReportDaoImpl implements ReportDao {
 
     @Override
     public List<Map.Entry<String, Integer>> topItemsForDate(LocalDate date, int limit) {
-        String sql = "SELECT mi.naziv, SUM(oi.kolicina) AS qty FROM order_items oi JOIN orders o ON o.id=oi.order_id JOIN menu_items mi ON mi.id=oi.item_id WHERE DATE(o.datum)=? AND mi.kategorija <> 'Piće' GROUP BY mi.naziv ORDER BY qty DESC LIMIT ?";
+        String sql = "SELECT mi.naziv, SUM(oi.kolicina) AS qty FROM order_items oi JOIN orders o ON o.id=oi.order_id JOIN menu_items mi ON mi.id=oi.item_id WHERE DATE(o.datum)=? AND mi.item_type = 'FOOD' GROUP BY mi.naziv ORDER BY qty DESC LIMIT ?";
         try (Connection c = DbUtil.getConnection(); PreparedStatement ps = c.prepareStatement(sql)) {
             ps.setDate(1, java.sql.Date.valueOf(date));
             ps.setInt(2, limit);
@@ -82,7 +82,7 @@ public class ReportDaoImpl implements ReportDao {
         LEFT JOIN order_items oi
             ON oi.order_id = o.id
             AND oi.item_id = mi.id
-        WHERE mi.kategorija = 'Piće'
+        WHERE mi.item_type = 'DRINK'
         GROUP BY
             mi.id,
             mi.naziv,

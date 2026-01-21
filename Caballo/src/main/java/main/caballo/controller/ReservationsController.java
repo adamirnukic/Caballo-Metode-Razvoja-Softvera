@@ -138,7 +138,7 @@ public class ReservationsController {
     private void create(ActionEvent e) {
         try {
             DiningTable t = tableChoice.getSelectionModel().getSelectedItem();
-            if (t == null) { alert("Choose a table."); return; }
+            if (t == null) { alert("Odaberite stol."); return; }
             Reservation r = new Reservation(0,
                     t.getId(),
                     guestField.getText(),
@@ -150,16 +150,16 @@ public class ReservationsController {
             dao.create(r);
             load();
             clearForm();
-        } catch (Exception ex) { alert("Create failed: " + ex.getMessage()); }
+        } catch (Exception ex) { alert("Kreiranje nije uspjelo: " + ex.getMessage()); }
     }
 
     @FXML
     private void update(ActionEvent e) {
         Reservation sel = reservationsTable.getSelectionModel().getSelectedItem();
-        if (sel == null) { alert("Select a reservation."); return; }
+        if (sel == null) { alert("Odaberite rezervaciju."); return; }
         try {
             DiningTable t = tableChoice.getSelectionModel().getSelectedItem();
-            if (t == null) { alert("Choose a table."); return; }
+            if (t == null) { alert("Odaberite stol."); return; }
             sel.setTableId(t.getId());
             sel.setImeGosta(guestField.getText());
             sel.setBrojTelefona(phoneField.getText());
@@ -169,17 +169,17 @@ public class ReservationsController {
             sel.setNapomena(noteField.getText());
             dao.update(sel);
             load();
-        } catch (Exception ex) { alert("Update failed: " + ex.getMessage()); }
+        } catch (Exception ex) { alert("Ažuriranje nije uspjelo: " + ex.getMessage()); }
     }
 
     @FXML
     private void delete(ActionEvent e) {
         Reservation sel = reservationsTable.getSelectionModel().getSelectedItem();
-        if (sel == null) { alert("Select a reservation."); return; }
+        if (sel == null) { alert("Odaberite rezervaciju."); return; }
         try {
             dao.delete(sel.getId());
             load();
-        } catch (Exception ex) { alert("Delete failed: " + ex.getMessage()); }
+        } catch (Exception ex) { alert("Brisanje nije uspjelo: " + ex.getMessage()); }
     }
 
     private void clearForm() {

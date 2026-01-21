@@ -54,7 +54,7 @@ public class UsersController {
             String p = passwordField.getText();
             Role r = roleChoice.getValue();
             if (u == null || u.isBlank() || p == null || p.isBlank() || r == null) {
-                alert("All fields required to create user.");
+                alert("Sva polja su obavezna za kreiranje korisnika.");
                 return;
             }
             String salt = PasswordUtil.generateSalt(16);
@@ -66,41 +66,41 @@ public class UsersController {
             passwordField.clear();
             roleChoice.getSelectionModel().select(Role.USER);
         } catch (Exception ex) {
-            alert("Create failed: " + ex.getMessage());
+            alert("Kreiranje nije uspjelo: " + ex.getMessage());
         }
     }
 
     @FXML
     private void resetPassword(ActionEvent e) {
         User sel = table.getSelectionModel().getSelectedItem();
-        if (sel == null) { alert("Select a user."); return; }
+        if (sel == null) { alert("Odaberite korisnika."); return; }
         String p = passwordField.getText();
-        if (p == null || p.isBlank()) { alert("Enter new password in the password field."); return; }
+        if (p == null || p.isBlank()) { alert("Unesite novu lozinku u polje za lozinku."); return; }
         try {
             String salt = PasswordUtil.generateSalt(16);
             String hash = PasswordUtil.hashSha256(p, salt);
             sel.setSalt(salt);
             sel.setPasswordHash(hash);
             boolean ok = userDao.resetPassword(sel);
-            if (!ok) alert("Reset failed.");
-            else { refresh(); passwordField.clear(); }
+            if (!ok) alert("Resetovanje lozinke nije uspjelo.");
+            else { refresh(); passwordField.clear(); alert("Lozinka uspješno resetovana."); }
         } catch (Exception ex) {
-            alert("Reset failed: " + ex.getMessage());
+            alert("Resetovanje lozinke nije uspjelo: " + ex.getMessage());
         }
     }
 
     @FXML
     private void deleteUser(ActionEvent e) {
         User sel = table.getSelectionModel().getSelectedItem();
-        if (sel == null) { alert("Select a user."); return; }
+        if (sel == null) { alert("Odaberite korisnika."); return; }
         User me = CaballoApplication.getCurrentUser();
-        if (me != null && me.getId() == sel.getId()) { alert("You cannot delete your own account while logged in."); return; }
+        if (me != null && me.getId() == sel.getId()) { alert("Ne možete obrisati vlastiti nalog dok ste prijavljeni."); return; }
         try {
             boolean ok = userDao.deleteById(sel.getId());
-            if (!ok) alert("Delete failed.");
+            if (!ok) alert("Brisanje nije uspjelo.");
             else refresh();
         } catch (Exception ex) {
-            alert("Delete failed: " + ex.getMessage());
+            alert("Brisanje nije uspjelo: " + ex.getMessage());
         }
     }
 

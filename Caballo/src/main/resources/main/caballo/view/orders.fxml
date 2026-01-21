@@ -16,52 +16,52 @@
     <top>
         <HBox spacing="10" styleClass="app-header">
             <VBox spacing="2">
-                <Label text="Orders" styleClass="app-title"/>
-                <Label text="Create new orders and review recent ones" styleClass="muted"/>
+                <Label text="Narudžbe" styleClass="app-title"/>
+                <Label text="Kreiraj nove narudžbe i pregledaj nedavne" styleClass="muted"/>
             </VBox>
             <Region HBox.hgrow="ALWAYS"/>
-            <Button text="New Order" onAction="#newOrder" styleClass="btn-primary"/>
-            <Button text="Back" onAction="#goBack" styleClass="btn-secondary"/>
+            <Button text="Nova narudžba" onAction="#newOrder" styleClass="btn-primary"/>
+            <Button text="Nazad" onAction="#goBack" styleClass="btn-secondary"/>
         </HBox>
     </top>
 
     <center>
         <SplitPane dividerPositions="0.25, 0.65" styleClass="content">
             <VBox spacing="10" styleClass="card">
-                <Label text="Recent Orders" styleClass="card-title"/>
+                <Label text="Nedavne narudžbe" styleClass="card-title"/>
                 <TableView fx:id="ordersTable">
                     <columnResizePolicy>
                         <TableView fx:constant="CONSTRAINED_RESIZE_POLICY"/>
                     </columnResizePolicy>
 
                     <columns>
-                        <TableColumn fx:id="orderDateCol" prefWidth="160" text="Date"/>
-                        <TableColumn fx:id="orderTotalCol" prefWidth="100" text="Total"/>
+                        <TableColumn fx:id="orderDateCol" prefWidth="160" text="Datum"/>
+                        <TableColumn fx:id="orderTotalCol" prefWidth="100" text="Ukupno"/>
                     </columns>
                 </TableView>
             </VBox>
 
             <VBox spacing="10" styleClass="card">
-                <Label text="Items" styleClass="card-title"/>
+                <Label text="Stavke" styleClass="card-title"/>
                 <TableView fx:id="itemsTable">
                     <columnResizePolicy>
                         <TableView fx:constant="CONSTRAINED_RESIZE_POLICY"/>
                     </columnResizePolicy>
 
                     <columns>
-                        <TableColumn fx:id="itemNameCol" prefWidth="150" text="Item"/>
-                        <TableColumn fx:id="itemQtyCol" prefWidth="60" text="Qty"/>
-                        <TableColumn fx:id="itemPriceCol" prefWidth="80" text="Price"/>
-                        <TableColumn fx:id="itemSumCol" prefWidth="90" text="Sum"/>
+                        <TableColumn fx:id="itemNameCol" prefWidth="150" text="Artikal"/>
+                        <TableColumn fx:id="itemQtyCol" prefWidth="60" text="Kol."/>
+                        <TableColumn fx:id="itemPriceCol" prefWidth="80" text="Cijena"/>
+                        <TableColumn fx:id="itemSumCol" prefWidth="90" text="Iznos"/>
                     </columns>
                 </TableView>
             </VBox>
 
             <VBox spacing="10" styleClass="card">
-                <Label text="Add Item" styleClass="card-title"/>
+                <Label text="Dodaj stavku" styleClass="card-title"/>
 
                 <HBox spacing="8" styleClass="toolbar">
-                    <Label text="Search" styleClass="muted"/>
+                    <Label text="Traži" styleClass="muted"/>
                     <TextField fx:id="searchMenuField" HBox.hgrow="ALWAYS"/>
                 </HBox>
 
@@ -71,16 +71,16 @@
                     </columnResizePolicy>
 
                     <columns>
-                        <TableColumn fx:id="menuNameCol" prefWidth="180" text="Name"/>
-                        <TableColumn fx:id="menuCatCol" prefWidth="120" text="Category"/>
-                        <TableColumn fx:id="menuPriceCol" prefWidth="80" text="Price"/>
+                        <TableColumn fx:id="menuNameCol" prefWidth="180" text="Naziv"/>
+                        <TableColumn fx:id="menuCatCol" prefWidth="120" text="Kategorija"/>
+                        <TableColumn fx:id="menuPriceCol" prefWidth="80" text="Cijena"/>
                     </columns>
                 </TableView>
 
                 <HBox spacing="8" styleClass="toolbar">
-                    <Label text="Qty" styleClass="muted"/>
+                    <Label text="Kol." styleClass="muted"/>
                     <TextField fx:id="qtyField" prefWidth="80"/>
-                    <Button text="Add Item" onAction="#addItem" styleClass="btn-primary"/>
+                    <Button text="Dodaj stavku" onAction="#addItem" styleClass="btn-primary"/>
                 </HBox>
             </VBox>
         </SplitPane>

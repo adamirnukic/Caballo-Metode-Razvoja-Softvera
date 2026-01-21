@@ -15,23 +15,23 @@
 
     <HBox spacing="10" styleClass="app-header">
         <VBox spacing="2">
-            <Label text="Reports" styleClass="app-title"/>
-            <Label text="Daily overview and exports" styleClass="muted"/>
+            <Label text="Izvještaji" styleClass="app-title"/>
+            <Label text="Dnevni pregled i izvoz" styleClass="muted"/>
         </VBox>
         <Region HBox.hgrow="ALWAYS"/>
-        <Button text="Back" onAction="#goBack" styleClass="btn-secondary"/>
+        <Button text="Nazad" onAction="#goBack" styleClass="btn-secondary"/>
     </HBox>
 
     <HBox spacing="10" alignment="CENTER_LEFT" styleClass="card toolbar">
-        <Label text="Date:" styleClass="muted"/>
+        <Label text="Datum:" styleClass="muted"/>
         <DatePicker fx:id="datePicker"/>
-        <Button text="Load" onAction="#loadData" styleClass="btn-primary"/>
-        <Button text="Export Daily PDF" onAction="#export" styleClass="btn-secondary"/>
-        <Button text="Close Day" onAction="#onCloseDayClicked" styleClass="btn-danger"/>
+        <Button text="Učitaj" onAction="#loadData" styleClass="btn-primary"/>
+        <Button text="Izvezi Dnevni PDF" onAction="#export" styleClass="btn-secondary"/>
+        <Button text="Zatvori dan" onAction="#onCloseDayClicked" styleClass="btn-danger"/>
 
         <Region HBox.hgrow="ALWAYS"/>
 
-        <Label fx:id="totalLabel" text="0.00 BAM" styleClass="app-title"/>
+        <Label fx:id="totalLabel" text="0.00 KM" styleClass="app-title"/>
     </HBox>
 
     <HBox spacing="10" styleClass="content" VBox.vgrow="ALWAYS">
@@ -57,12 +57,12 @@
 
         <VBox spacing="10" prefWidth="360" minWidth="320" maxWidth="420" VBox.vgrow="ALWAYS">
             <VBox spacing="8" styleClass="card" VBox.vgrow="ALWAYS">
-                <Label text="Top Items" styleClass="card-title"/>
+                <Label text="Najprodavaniji artikli" styleClass="card-title"/>
                 <ListView fx:id="topItemsList" VBox.vgrow="ALWAYS"/>
             </VBox>
 
             <VBox spacing="8" styleClass="card" VBox.vgrow="ALWAYS">
-                <Label text="Sales by Waiter" styleClass="card-title"/>
+                <Label text="Prodaja po konobaru" styleClass="card-title"/>
                 <ListView fx:id="salesByWaiterList" VBox.vgrow="ALWAYS"/>
             </VBox>
         </VBox>

@@ -94,12 +94,12 @@ public class OrdersController {
     @FXML
     private void addItem(ActionEvent e) {
         Order sel = ordersTable.getSelectionModel().getSelectedItem();
-        if (sel == null) { alert("Select an order first."); return; }
+        if (sel == null) { alert("Prvo odaberite narudžbu."); return; }
         MenuItem chosen = menuTable.getSelectionModel().getSelectedItem();
-        if (chosen == null) { alert("Select a menu item."); return; }
+        if (chosen == null) { alert("Odaberite stavku s menija."); return; }
         try {
             int qty = Integer.parseInt(qtyField.getText());
-            if (qty <= 0) throw new IllegalArgumentException("Qty must be > 0");
+            if (qty <= 0) throw new IllegalArgumentException("Količina mora biti > 0");
             if (chosen instanceof Pice drink) {
                 if (qty > drink.getCurrentQty()) {
                     alert("Nema dovoljno na stanju. Trenutno: " + drink.getCurrentQty());
@@ -115,7 +115,7 @@ public class OrdersController {
             items.setAll(orderDao.findItems(sel.getId()));
             qtyField.clear();
         } catch (Exception ex) {
-            alert("Add item failed: " + ex.getMessage());
+            alert("Dodavanje stavke nije uspjelo: " + ex.getMessage());
         }
     }
 

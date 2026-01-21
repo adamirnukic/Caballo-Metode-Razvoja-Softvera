@@ -16,11 +16,11 @@
     <top>
         <HBox spacing="10" styleClass="app-header">
             <VBox spacing="2">
-                <Label text="Users" styleClass="app-title"/>
-                <Label text="Admin management" styleClass="muted"/>
+                <Label text="Korisnici" styleClass="app-title"/>
+                <Label text="Admin panel" styleClass="muted"/>
             </VBox>
             <Region HBox.hgrow="ALWAYS"/>
-            <Button text="Back" onAction="#goBack" styleClass="btn-secondary"/>
+            <Button text="Nazad" onAction="#goBack" styleClass="btn-secondary"/>
         </HBox>
     </top>
 
@@ -30,8 +30,8 @@
                 <TableView fx:id="table">
                     <columns>
                         <TableColumn fx:id="idCol" text="ID" prefWidth="60"/>
-                        <TableColumn fx:id="usernameCol" text="Username" prefWidth="180"/>
-                        <TableColumn fx:id="roleCol" text="Role" prefWidth="100"/>
+                        <TableColumn fx:id="usernameCol" text="Korisničko ime" prefWidth="180"/>
+                        <TableColumn fx:id="roleCol" text="Uloga" prefWidth="100"/>
                     </columns>
                 </TableView>
             </VBox>
@@ -41,21 +41,21 @@
     <right>
         <VBox spacing="10" prefWidth="360" styleClass="content">
             <VBox spacing="10" styleClass="card">
-                <Label text="User details" styleClass="card-title"/>
+                <Label text="Detalji korisnika" styleClass="card-title"/>
 
-                <Label text="Username" styleClass="muted"/>
+                <Label text="Korisničko ime" styleClass="muted"/>
                 <TextField fx:id="usernameField"/>
 
-                <Label text="Password (for create/reset)" styleClass="muted"/>
+                <Label text="Lozinka (za kreiranje/reset)" styleClass="muted"/>
                 <PasswordField fx:id="passwordField"/>
 
-                <Label text="Role" styleClass="muted"/>
+                <Label text="Uloga" styleClass="muted"/>
                 <ChoiceBox fx:id="roleChoice"/>
 
                 <HBox spacing="8">
-                    <Button text="Create" onAction="#createUser" styleClass="btn-primary"/>
-                    <Button text="Reset Password" onAction="#resetPassword" styleClass="btn-secondary"/>
-                    <Button text="Delete" onAction="#deleteUser" styleClass="btn-danger"/>
+                    <Button text="Kreiraj" onAction="#createUser" styleClass="btn-primary"/>
+                    <Button text="Resetuj lozinku" onAction="#resetPassword" styleClass="btn-secondary"/>
+                    <Button text="Obriši" onAction="#deleteUser" styleClass="btn-danger"/>
                 </HBox>
             </VBox>
         </VBox>

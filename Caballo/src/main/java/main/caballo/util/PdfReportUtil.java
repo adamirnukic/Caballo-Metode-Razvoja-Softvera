@@ -212,10 +212,10 @@ public final class PdfReportUtil {
         float y = cardYTop - padding - FONT_TITLE;
 
         cs.setNonStrokingColor(CAB_TEXT);
-        drawText(cs, bold, FONT_TITLE, xLeft, y, "Caballo · Daily Sales");
+        drawText(cs, bold, FONT_TITLE, xLeft, y, "Caballo · Dnevni Izvještaj");
 
-        String dateStr = "Date: " + date;
-        String genStr = "Generated: " + LocalDateTime.now().format(TS_FMT);
+        String dateStr = "Datum: " + date;
+        String genStr = "Generisano: " + LocalDateTime.now().format(TS_FMT);
 
         float metaY = cardYTop - padding - FONT_SUBTITLE;
         cs.setNonStrokingColor(CAB_MUTED);
@@ -224,7 +224,7 @@ public final class PdfReportUtil {
 
         float totalY = cardY + 18f;
         cs.setNonStrokingColor(CAB_TEXT);
-        drawText(cs, bold, 12.5f, xLeft, totalY, "Total revenue");
+        drawText(cs, bold, 12.5f, xLeft, totalY, "Ukupan prihod");
         drawText(cs, regular, 12.5f, xLeft + 105f, totalY, moneyFmt.format(total) + " BAM");
 
         cs.setNonStrokingColor(CAB_MUTED);
@@ -453,8 +453,8 @@ public final class PdfReportUtil {
         float rightX = pageSize.getWidth() - PAGE_MARGIN;
 
         cs.setNonStrokingColor(CAB_MUTED);
-        drawText(cs, regular, FONT_FOOTER, PAGE_MARGIN, y, "Caballo · Daily Sales · " + date);
-        drawRightAlignedText(cs, regular, FONT_FOOTER, rightX, y, "Page " + page + " / " + totalPages);
+        drawText(cs, regular, FONT_FOOTER, PAGE_MARGIN, y, "Caballo · Dnevni Izvještaj · " + date);
+        drawRightAlignedText(cs, regular, FONT_FOOTER, rightX, y, "Stranica " + page + " / " + totalPages);
 
         cs.setStrokingColor(CAB_BORDER);
         cs.setLineWidth(0.8f);

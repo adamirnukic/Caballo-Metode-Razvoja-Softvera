@@ -148,7 +148,7 @@ public class MenuController {
 
             if (drinkCheck.isSelected()) {
                 int currentQty = Integer.parseInt(qtyField.getText());
-                if (currentQty < 0) throw new IllegalArgumentException("Qty must be >= 0");
+                if (currentQty < 0) throw new IllegalArgumentException("Količina mora biti >= 0");
                 m = new Pice(
                         0,
                         nameField.getText(),
@@ -171,7 +171,7 @@ public class MenuController {
             refresh();
             clearForm();
         } catch (Exception ex) {
-            showError("Invalid input: " + ex.getMessage());
+            showError("Neispravan unos: " + ex.getMessage());
         }
     }
 
@@ -179,7 +179,7 @@ public class MenuController {
     private void updateItem(ActionEvent e) {
         MenuItem sel = table.getSelectionModel().getSelectedItem();
         if (sel == null) {
-            showError("Select a row.");
+            showError("Odaberite red.");
             return;
         }
         try {
@@ -197,7 +197,7 @@ public class MenuController {
             dao.update(sel);
             refresh();
         } catch (Exception ex) {
-            showError("Update failed: " + ex.getMessage());
+            showError("Ažuriranje nije uspjelo: " + ex.getMessage());
         }
     }
 
@@ -205,12 +205,12 @@ public class MenuController {
     private void deleteItem(ActionEvent e) {
         MenuItem sel = table.getSelectionModel().getSelectedItem();
         if (sel == null) {
-            showError("Select a row to delete.");
+            showError("Odaberite red za brisanje.");
             return;
         }
 
         Alert confirm = new Alert(Alert.AlertType.CONFIRMATION,
-                "Delete item: " + sel.getName() + " ?",
+                "Obriši stavku: " + sel.getName() + " ?",
                 ButtonType.YES, ButtonType.NO);
         confirm.setHeaderText(null);
         confirm.showAndWait();
@@ -222,7 +222,7 @@ public class MenuController {
         try {
             boolean deleted = dao.delete(sel.getId());
             if (!deleted) {
-                showError("Delete failed in database (0 rows affected).");
+                showError("Brisanje nije uspjelo u bazi (0 redova promijenjeno).");
                 return;
             }
 
@@ -231,7 +231,7 @@ public class MenuController {
             clearForm();
             table.refresh();
         } catch (Exception ex) {
-            showError("Delete error: " + ex.getMessage());
+            showError("Greška pri brisanju: " + ex.getMessage());
         }
     }
 
@@ -239,15 +239,15 @@ public class MenuController {
     private void addDelivery(ActionEvent e) {
         MenuItem sel = table.getSelectionModel().getSelectedItem();
         if (sel == null) {
-            showError("Select an item.");
+            showError("Odaberite stavku.");
             return;
         }
         if (!(sel instanceof Pice drink)) {
-            showError("Delivery možeš dodati samo za pića.");
+            showError("Dostavu možete dodati samo za pića.");
             return;
         }
         if (deliveryQtyField == null) {
-            showError("Delivery quantity field not configured.");
+            showError("Polje za količinu dostave nije konfigurisano.");
             return;
         }
 
@@ -255,11 +255,11 @@ public class MenuController {
         try {
             qty = Integer.parseInt(deliveryQtyField.getText());
         } catch (NumberFormatException ex) {
-            showError("Invalid delivery quantity.");
+            showError("Neispravna količina dostave.");
             return;
         }
         if (qty <= 0) {
-            showError("Quantity must be > 0.");
+            showError("Količina mora biti > 0.");
             return;
         }
 
@@ -271,7 +271,7 @@ public class MenuController {
             table.refresh();
             deliveryQtyField.clear();
         } catch (Exception ex) {
-            showError("Delivery failed: " + ex.getMessage());
+            showError("Dostava nije uspjela: " + ex.getMessage());
         }
     }
 
@@ -299,4 +299,3 @@ public class MenuController {
         new Alert(Alert.AlertType.ERROR, msg, ButtonType.OK).showAndWait();
     }
 }
-

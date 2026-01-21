@@ -42,7 +42,8 @@ public class DashboardController {
     private final MenuItemDao menuItemDao = new MenuItemDaoImpl();
 
     public void init(User user) {
-        welcomeLabel.setText("Welcome, " + user.getUsername() + " (" + user.getRole() + ")");
+        String roleStr = user.getRole() == Role.ADMIN ? "ADMIN" : "KORISNIK";
+        welcomeLabel.setText("Dobrodošli, " + user.getUsername() + " (" + roleStr + ")");
         boolean isAdmin = user.getRole() == Role.ADMIN;
         usersBtn.setVisible(isAdmin);
 
@@ -60,9 +61,9 @@ public class DashboardController {
                     }
 
                     setText(item);
-                    if (item.startsWith("[CRITICAL]")) {
+                    if (item.startsWith("[KRITIČNO]")) {
                         getStyleClass().add("critical-stock-item");
-                    } else if (item.startsWith("[LOW]")) {
+                    } else if (item.startsWith("[MALO]")) {
                         getStyleClass().add("low-stock-item");
                     }
                 }
@@ -89,9 +90,9 @@ public class DashboardController {
             boolean empty = data.isEmpty();
             topItemsPieChart.setVisible(!empty);
             topItemsPieChart.setManaged(!empty);
-            topItemsEmptyLabel.setText(empty ? "No orders yet for today." : "");
+            topItemsEmptyLabel.setText(empty ? "Danas još nema narudžbi." : "");
         } catch (Exception ex) {
-            topItemsEmptyLabel.setText("Unable to load top items.");
+            topItemsEmptyLabel.setText("Nije moguće učitati najprodavanije artikle.");
         }
     }
 
@@ -103,8 +104,8 @@ public class DashboardController {
                     .filter(p -> p.getCurrentQty() <= LOW_STOCK_THRESHOLD)
                     .sorted(Comparator.comparingInt(Pice::getCurrentQty))
                     .map(p -> {
-                        String badge = p.getCurrentQty() <= CRITICAL_STOCK_THRESHOLD ? "CRITICAL" : "LOW";
-                        return String.format("[%s] %s (%d)", badge, p.getName(), p.getCurrentQty());
+                        String prefix = (p.getCurrentQty() <= CRITICAL_STOCK_THRESHOLD) ? "[KRITIČNO] " : "[MALO] ";
+                        return prefix + p.getName() + " (Kol: " + p.getCurrentQty() + ")";
                     })
                     .toList();
 
@@ -113,11 +114,11 @@ public class DashboardController {
             boolean empty = low.isEmpty();
             lowStockList.setVisible(!empty);
             lowStockList.setManaged(!empty);
-            lowStockEmptyLabel.setText(empty ? "All good — no drinks with low stock." : "");
+            lowStockEmptyLabel.setText(empty ? "Sve je u redu — nema pića sa niskim stanjem." : "");
         } catch (Exception ex) {
             lowStockList.setVisible(false);
             lowStockList.setManaged(false);
-            lowStockEmptyLabel.setText("Unable to load low stock items.");
+            lowStockEmptyLabel.setText("Nije moguće učitati stavke sa niskim stanjem.");
         }
     }
 

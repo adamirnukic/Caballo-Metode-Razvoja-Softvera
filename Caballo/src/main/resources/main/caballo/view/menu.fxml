@@ -17,13 +17,13 @@
         <VBox spacing="10" styleClass="app-header">
             <HBox spacing="10" styleClass="toolbar">
                 <VBox spacing="2">
-                    <Label text="Menu" styleClass="app-title"/>
-                    <Label text="Search and manage menu items" styleClass="muted"/>
+                    <Label text="Meni" styleClass="app-title"/>
+                    <Label text="Pretraga i upravljanje stavkama menija" styleClass="muted"/>
                 </VBox>
                 <Region HBox.hgrow="ALWAYS"/>
-                <Label text="Search:" styleClass="muted"/>
+                <Label text="Traži:" styleClass="muted"/>
                 <TextField fx:id="searchField" prefWidth="320"/>
-                <Button text="Back" onAction="#goBack" styleClass="btn-secondary"/>
+                <Button text="Nazad" onAction="#goBack" styleClass="btn-secondary"/>
             </HBox>
         </VBox>
     </top>
@@ -33,11 +33,11 @@
             <VBox styleClass="card">
                 <TableView fx:id="table">
                     <columns>
-                        <TableColumn fx:id="nameCol" text="Name" prefWidth="150"/>
-                        <TableColumn fx:id="descCol" text="Description" prefWidth="250"/>
-                        <TableColumn fx:id="priceCol" text="Price" prefWidth="80"/>
-                        <TableColumn fx:id="catCol" text="Category" prefWidth="120"/>
-                        <TableColumn fx:id="qtyCol" text="Qty" prefWidth="60"/>
+                        <TableColumn fx:id="nameCol" text="Naziv" prefWidth="150"/>
+                        <TableColumn fx:id="descCol" text="Opis" prefWidth="250"/>
+                        <TableColumn fx:id="priceCol" text="Cijena" prefWidth="80"/>
+                        <TableColumn fx:id="catCol" text="Kategorija" prefWidth="120"/>
+                        <TableColumn fx:id="qtyCol" text="Kol." prefWidth="60"/>
                     </columns>
                 </TableView>
             </VBox>
@@ -47,35 +47,35 @@
     <right>
         <VBox spacing="3" prefWidth="360" styleClass="content">
             <VBox spacing="4" styleClass="card">
-                <Label text="Item details" styleClass="card-title"/>
+                <Label text="Detalji stavke" styleClass="card-title"/>
 
-                <Label text="Name" styleClass="muted"/>
+                <Label text="Naziv" styleClass="muted"/>
                 <TextField fx:id="nameField"/>
 
-                <Label text="Price" styleClass="muted"/>
+                <Label text="Cijena" styleClass="muted"/>
                 <TextField fx:id="priceField"/>
 
-                <Label text="Category" styleClass="muted"/>
+                <Label text="Kategorija" styleClass="muted"/>
                 <HBox spacing="8" styleClass="toolbar">
                     <TextField fx:id="categoryField" HBox.hgrow="ALWAYS"/>
                     <CheckBox fx:id="drinkCheck" text="Piće" />
                 </HBox>
 
-                <Label text="Qty" styleClass="muted"/>
+                <Label text="Kol." styleClass="muted"/>
                 <TextField fx:id="qtyField"/>
 
-                <Label text="Description" styleClass="muted"/>
+                <Label text="Opis" styleClass="muted"/>
                 <TextArea fx:id="descArea" prefRowCount="4"/>
 
                 <HBox spacing="8">
-                    <Button text="Add" onAction="#addItem" styleClass="btn-primary"/>
-                    <Button text="Update" onAction="#updateItem" styleClass="btn-secondary"/>
-                    <Button text="Delete" onAction="#deleteItem" styleClass="btn-danger"/>
+                    <Button text="Dodaj" onAction="#addItem" styleClass="btn-primary"/>
+                    <Button text="Ažuriraj" onAction="#updateItem" styleClass="btn-secondary"/>
+                    <Button text="Obriši" onAction="#deleteItem" styleClass="btn-danger"/>
                 </HBox>
 
                 <Separator/>
 
-                <Label text="Delivery" styleClass="card-title"/>
+                <Label text="Dostava" styleClass="card-title"/>
                 <HBox spacing="8" styleClass="toolbar">
                     <Label text="Količina" styleClass="muted"/>
                     <TextField fx:id="deliveryQtyField" prefWidth="90"/>

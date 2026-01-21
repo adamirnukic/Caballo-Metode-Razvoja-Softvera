@@ -17,7 +17,7 @@ public class CaballoApplication extends Application {
     @Override
     public void start(Stage stage) throws IOException {
         primaryStage = stage;
-        primaryStage.setTitle("Caballo Restaurant");
+        primaryStage.setTitle("Restoran Caballo");
         showLogin();
         primaryStage.show();
     }
@@ -53,4 +53,3 @@ public class CaballoApplication extends Application {
         return currentUser;
     }
 }
-

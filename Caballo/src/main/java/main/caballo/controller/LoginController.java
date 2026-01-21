@@ -32,11 +32,11 @@ public class LoginController {
                 if (ok) {
                     if (onLoginSuccess != null) onLoginSuccess.accept(user);
                 } else {
-                    statusLabel.setText("Invalid credentials.");
+                    statusLabel.setText("Pogrešni podaci za prijavu.");
                 }
-            }, () -> statusLabel.setText("User not found."));
+            }, () -> statusLabel.setText("Korisnik nije pronađen."));
         } catch (Exception ex) {
-            statusLabel.setText("An error occurred during login.");
+            statusLabel.setText("Došlo je do greške prilikom prijave.");
         }
     }
 

@@ -112,8 +112,9 @@ public class ShiftsController {
 
         try {
             shiftDao.upsert(u.getId(), d, t, noteArea.getText());
+            alert("Smjena uspješno spremljena!");
         } catch (Exception ex) {
-            alert("Save failed: " + ex.getMessage());
+            alert("Spremanje nije uspjelo: " + ex.getMessage());
         }
     }
 

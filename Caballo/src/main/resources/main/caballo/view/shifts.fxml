@@ -19,7 +19,7 @@
             <Label text="Uredi smjene po korisniku i datumu" styleClass="muted"/>
         </VBox>
         <Region HBox.hgrow="ALWAYS"/>
-        <Button text="Back" onAction="#goBack" styleClass="btn-secondary"/>
+        <Button text="Nazad" onAction="#goBack" styleClass="btn-secondary"/>
     </HBox>
 
     <HBox spacing="12" VBox.vgrow="ALWAYS">
@@ -28,8 +28,8 @@
             <TableView fx:id="usersTable" VBox.vgrow="ALWAYS">
                 <columns>
                     <TableColumn fx:id="userIdCol" text="ID" prefWidth="70"/>
-                    <TableColumn fx:id="usernameCol" text="Username" prefWidth="200"/>
-                    <TableColumn fx:id="roleCol" text="Role" prefWidth="120"/>
+                    <TableColumn fx:id="usernameCol" text="Korisničko ime" prefWidth="200"/>
+                    <TableColumn fx:id="roleCol" text="Uloga" prefWidth="120"/>
                 </columns>
             </TableView>
         </VBox>
@@ -54,7 +54,7 @@
             </GridPane>
 
             <HBox spacing="10">
-                <Button fx:id="saveBtn" text="Save" onAction="#save" styleClass="btn-primary"/>
+                <Button fx:id="saveBtn" text="Spremi" onAction="#save" styleClass="btn-primary"/>
             </HBox>
         </VBox>
     </HBox>

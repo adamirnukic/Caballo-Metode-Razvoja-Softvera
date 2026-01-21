@@ -16,36 +16,36 @@
 
     <HBox spacing="10" styleClass="app-header">
         <VBox spacing="3">
-            <Label text="Dashboard" styleClass="app-title"/>
+            <Label text="Kontrolna ploča" styleClass="app-title"/>
             <Label fx:id="welcomeLabel" styleClass="muted"/>
         </VBox>
         <Region HBox.hgrow="ALWAYS"/>
-        <Button fx:id="usersBtn" text="Users (Admin)" onAction="#openUsers" styleClass="btn-secondary"/>
+        <Button fx:id="usersBtn" text="Korisnici (Admin)" onAction="#openUsers" styleClass="btn-secondary"/>
         <Button text="Smjene" onAction="#openShifts" styleClass="btn-secondary"/>
-        <Button text="Reports" onAction="#openReports" styleClass="btn-secondary"/>
-        <Button text="Logout" onAction="#logout" styleClass="btn-secondary"/>
+        <Button text="Izvještaji" onAction="#openReports" styleClass="btn-secondary"/>
+        <Button text="Odjava" onAction="#logout" styleClass="btn-secondary"/>
     </HBox>
 
     <VBox spacing="10" styleClass="content">
-        <Label text="Quick actions" styleClass="card-title"/>
+        <Label text="Brze radnje" styleClass="card-title"/>
 
         <HBox spacing="12">
             <VBox spacing="10" styleClass="card" HBox.hgrow="ALWAYS">
-                <Label text="Menu" styleClass="card-title"/>
-                <Label text="Manage items, prices and stock." styleClass="muted" wrapText="true"/>
-                <Button text="Open Menu" onAction="#openMenu" styleClass="btn-primary"/>
+                <Label text="Meni" styleClass="card-title"/>
+                <Label text="Upravljanje artiklima, cijenama i zalihama." styleClass="muted" wrapText="true"/>
+                <Button text="Otvori Meni" onAction="#openMenu" styleClass="btn-primary"/>
             </VBox>
 
             <VBox spacing="10" styleClass="card" HBox.hgrow="ALWAYS">
-                <Label text="Orders" styleClass="card-title"/>
-                <Label text="Create and review orders quickly." styleClass="muted" wrapText="true"/>
-                <Button text="Open Orders" onAction="#openOrders" styleClass="btn-primary"/>
+                <Label text="Narudžbe" styleClass="card-title"/>
+                <Label text="Kreiraj i pregledaj narudžbe." styleClass="muted" wrapText="true"/>
+                <Button text="Otvori Narudžbe" onAction="#openOrders" styleClass="btn-primary"/>
             </VBox>
 
             <VBox spacing="10" styleClass="card" HBox.hgrow="ALWAYS">
-                <Label text="Reservations" styleClass="card-title"/>
-                <Label text="Plan tables and daily bookings." styleClass="muted" wrapText="true"/>
-                <Button text="Open Reservations" onAction="#openReservations" styleClass="btn-primary"/>
+                <Label text="Rezervacije" styleClass="card-title"/>
+                <Label text="Planiranje stolova i dnevnih rezervacija." styleClass="muted" wrapText="true"/>
+                <Button text="Otvori Rezervacije" onAction="#openReservations" styleClass="btn-primary"/>
             </VBox>
         </HBox>
 
@@ -53,17 +53,17 @@
 
         <HBox spacing="12">
             <VBox spacing="8" styleClass="card" HBox.hgrow="ALWAYS">
-                <Label text="Top items (today)" styleClass="card-title"/>
+                <Label text="Najprodavanije (danas)" styleClass="card-title"/>
                 <Label fx:id="topItemsEmptyLabel" text="" styleClass="muted" wrapText="true"/>
                 <PieChart fx:id="topItemsPieChart" prefHeight="260" legendVisible="true" labelsVisible="true"/>
             </VBox>
 
             <VBox spacing="8" styleClass="card" HBox.hgrow="ALWAYS">
-                <Label text="Low stock (drinks)" styleClass="card-title"/>
+                <Label text="Male zalihe (pića)" styleClass="card-title"/>
                 <Label fx:id="lowStockEmptyLabel" text="" styleClass="muted" wrapText="true"/>
                 <ListView fx:id="lowStockList" prefHeight="260" />
                 <HBox spacing="10">
-                    <Button text="Open Menu" onAction="#openMenu" styleClass="btn-primary" />
+                    <Button text="Otvori Meni" onAction="#openMenu" styleClass="btn-primary" />
                 </HBox>
             </VBox>
         </HBox>

@@ -109,7 +109,7 @@ public class ReportsController {
         dao.ensureItemStockForDate(d);
 
         double total = dao.totalForDate(d);
-        totalLabel.setText(String.format("Total: %.2f BAM", total));
+        totalLabel.setText(String.format("Ukupno: %.2f KM", total));
 
         var top = dao.topItemsForDate(d, 10);
         topItemsList.setItems(FXCollections.observableArrayList(
@@ -121,7 +121,7 @@ public class ReportsController {
         var byWaiter = dao.salesByWaiter(d);
         salesByWaiterList.setItems(FXCollections.observableArrayList(
                 byWaiter.stream()
-                        .map(e -> e.getKey() + ": " + String.format("%.2f", e.getValue()) + " BAM")
+                        .map(e -> e.getKey() + ": " + String.format("%.2f", e.getValue()) + " KM")
                         .toList()
         ));
 
@@ -145,9 +145,9 @@ public class ReportsController {
             Files.createDirectories(out.getParent());
             PdfReportUtil.generateDailySales(d, total, items, out);
 
-            new Alert(Alert.AlertType.INFORMATION, "Exported to: " + out.toAbsolutePath(), ButtonType.OK).showAndWait();
+            new Alert(Alert.AlertType.INFORMATION, "Arhivirano u: " + out.toAbsolutePath(), ButtonType.OK).showAndWait();
         } catch (Exception ex) {
-            new Alert(Alert.AlertType.ERROR, "Export failed: " + ex.getMessage(), ButtonType.OK).showAndWait();
+            new Alert(Alert.AlertType.ERROR, "Export nije uspio: " + ex.getMessage(), ButtonType.OK).showAndWait();
         }
     }
 

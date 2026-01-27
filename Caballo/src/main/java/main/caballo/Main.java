@@ -10,7 +10,7 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 
-public class CaballoApplication extends Application {
+public class Main extends Application {
     private static Stage primaryStage;
     private static User currentUser;
 
@@ -24,7 +24,7 @@ public class CaballoApplication extends Application {
 
     public static void showLogin() {
         try {
-            FXMLLoader loader = new FXMLLoader(CaballoApplication.class.getResource("/main/caballo/view/login.fxml"));
+            FXMLLoader loader = new FXMLLoader(Main.class.getResource("/main/caballo/view/login.fxml"));
             Scene scene = new Scene(loader.load());
             LoginController controller = loader.getController();
             controller.setOnLoginSuccess(user -> {
@@ -39,7 +39,7 @@ public class CaballoApplication extends Application {
 
     public static void showDashboard() {
         try {
-            FXMLLoader loader = new FXMLLoader(CaballoApplication.class.getResource("/main/caballo/view/dashboard.fxml"));
+            FXMLLoader loader = new FXMLLoader(Main.class.getResource("/main/caballo/view/dashboard.fxml"));
             Scene scene = new Scene(loader.load());
             DashboardController controller = loader.getController();
             controller.init(currentUser);

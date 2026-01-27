@@ -1,7 +1,7 @@
 package main.caballo.controller;
 
 import javafx.event.ActionEvent;
-import main.caballo.CaballoApplication;
+import main.caballo.Main;
 import main.caballo.dao.UserDao;
 import main.caballo.dao.impl.UserDaoImpl;
 import main.caballo.model.Role;
@@ -93,7 +93,7 @@ public class UsersController {
     private void deleteUser(ActionEvent e) {
         User sel = table.getSelectionModel().getSelectedItem();
         if (sel == null) { alert("Odaberite korisnika."); return; }
-        User me = CaballoApplication.getCurrentUser();
+        User me = Main.getCurrentUser();
         if (me != null && me.getId() == sel.getId()) { alert("Ne možete obrisati vlastiti nalog dok ste prijavljeni."); return; }
         try {
             boolean ok = userDao.deleteById(sel.getId());
@@ -106,7 +106,7 @@ public class UsersController {
 
     @FXML
     private void goBack(ActionEvent e) {
-        CaballoApplication.showDashboard();
+        Main.showDashboard();
     }
 
 

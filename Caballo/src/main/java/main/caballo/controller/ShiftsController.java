@@ -7,7 +7,7 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
-import main.caballo.CaballoApplication;
+import main.caballo.Main;
 import main.caballo.dao.ShiftDao;
 import main.caballo.dao.UserDao;
 import main.caballo.dao.impl.ShiftDaoImpl;
@@ -67,7 +67,7 @@ public class ShiftsController {
 
     @FXML
     private void goBack(ActionEvent e) {
-        CaballoApplication.showDashboard();
+        Main.showDashboard();
     }
 
     private void loadForSelection() {

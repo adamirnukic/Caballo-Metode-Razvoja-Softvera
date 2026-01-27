@@ -1,7 +1,7 @@
 package main.caballo.controller;
 
 import javafx.event.ActionEvent;
-import main.caballo.CaballoApplication;
+import main.caballo.Main;
 import main.caballo.dao.MenuItemDao;
 import main.caballo.dao.ReportDao;
 import main.caballo.dao.impl.MenuItemDaoImpl;
@@ -292,7 +292,7 @@ public class MenuController {
 
     @FXML
     private void goBack(ActionEvent e) {
-        CaballoApplication.showDashboard();
+        Main.showDashboard();
     }
 
     private void showError(String msg) {

@@ -4,7 +4,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.chart.PieChart;
 import javafx.scene.control.ListView;
-import main.caballo.CaballoApplication;
+import main.caballo.Main;
 import main.caballo.dao.MenuItemDao;
 import main.caballo.dao.ReportDao;
 import main.caballo.dao.impl.MenuItemDaoImpl;
@@ -154,7 +154,7 @@ public class DashboardController {
 
     @FXML
     private void logout(ActionEvent e) {
-        CaballoApplication.showLogin();
+        Main.showLogin();
     }
 
     private void loadScene(String fxml) {

@@ -8,7 +8,7 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
-import main.caballo.CaballoApplication;
+import main.caballo.Main;
 import main.caballo.dao.ReservationDao;
 import main.caballo.dao.TableDao;
 import main.caballo.dao.impl.ReservationDaoImpl;
@@ -194,7 +194,7 @@ public class ReservationsController {
 
     @FXML
     private void goBack(ActionEvent e) {
-        CaballoApplication.showDashboard();
+        Main.showDashboard();
     }
 
     private void alert(String msg) { new Alert(Alert.AlertType.INFORMATION, msg, ButtonType.OK).showAndWait(); }

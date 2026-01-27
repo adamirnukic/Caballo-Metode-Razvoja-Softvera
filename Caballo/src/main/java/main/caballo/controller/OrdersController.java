@@ -8,7 +8,7 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
-import main.caballo.CaballoApplication;
+import main.caballo.Main;
 import main.caballo.dao.MenuItemDao;
 import main.caballo.dao.OrderDao;
 import main.caballo.dao.impl.MenuItemDaoImpl;
@@ -84,7 +84,7 @@ public class OrdersController {
     @FXML
     private void newOrder(ActionEvent e) {
         Order o = new Order();
-        o.setUserId(CaballoApplication.getCurrentUser().getId());
+        o.setUserId(Main.getCurrentUser().getId());
         o.setUkupno(0);
         orderDao.create(o);
         refreshOrders();
@@ -121,7 +121,7 @@ public class OrdersController {
 
     @FXML
     private void goBack(ActionEvent e) {
-        CaballoApplication.showDashboard();
+        Main.showDashboard();
     }
 
     private void alert(String msg) { new Alert(Alert.AlertType.INFORMATION, msg, ButtonType.OK).showAndWait(); }

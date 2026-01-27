@@ -6,7 +6,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.util.converter.IntegerStringConverter;
-import main.caballo.CaballoApplication;
+import main.caballo.Main;
 import main.caballo.dao.ReportDao;
 import main.caballo.dao.impl.ReportDaoImpl;
 import main.caballo.model.DailyItemReport;
@@ -153,6 +153,6 @@ public class ReportsController {
 
     @FXML
     private void goBack(ActionEvent e) {
-        CaballoApplication.showDashboard();
+        Main.showDashboard();
     }
 }

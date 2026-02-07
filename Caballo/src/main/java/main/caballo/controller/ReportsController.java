@@ -39,6 +39,16 @@ public class ReportsController {
     @FXML
     private void initialize() {
         datePicker.setValue(LocalDate.now());
+        datePicker.setDayCellFactory(picker -> new DateCell() {
+            @Override
+            public void updateItem(LocalDate item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty || item == null) {
+                    return;
+                }
+                setDisable(item.isAfter(LocalDate.now()));
+            }
+        });
 
         dailyItemsTable.setEditable(true);
 

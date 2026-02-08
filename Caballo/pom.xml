@@ -231,7 +231,7 @@
                     <!-- winConsole -> false nakon debugiranja -->
                     <winConsole>false</winConsole>
 
-                    <icon>src/main/resources/slike/caballo.ico</icon>
+                    <icon>src/main/resources/slike/logo.ico</icon>
 
                     <installDir>Caballo</installDir>
                     <modulePaths>
